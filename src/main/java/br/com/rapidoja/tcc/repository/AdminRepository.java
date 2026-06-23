@@ -20,6 +20,7 @@ public interface AdminRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.email = :email AND u.enabled = true AND u.profile = 'ADMIN'")
     Optional<User> findEnabledByEmail(String email);
 
+    @Query("SELECT u FROM User u WHERE u.email = :email AND u.profile = 'ADMIN'")
     Optional<User> findByEmail(String email);
 
     boolean existsByEmail(String email);

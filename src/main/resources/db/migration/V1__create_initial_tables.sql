@@ -11,6 +11,7 @@ CREATE TABLE user (
                       password VARCHAR(255) NOT NULL,
                       phone_number VARCHAR(20),
                       profile ENUM('CUSTOMER', 'DELIVERY_MAN', 'ADMIN') NOT NULL,
+                      is_enabled BOOLEAN DEFAULT TRUE NOT NULL,
                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
