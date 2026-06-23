@@ -1,8 +1,8 @@
 package br.com.rapidoja.tcc.service;
 
-import br.com.rapidoja.tcc.dto.CustomerRequestDTO;
-import br.com.rapidoja.tcc.dto.CustomerResponseDTO;
-import br.com.rapidoja.tcc.dto.CustomerUpdateDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerRequestDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerUpdateDTO;
 
 import java.util.List;
 import java.util.Optional;

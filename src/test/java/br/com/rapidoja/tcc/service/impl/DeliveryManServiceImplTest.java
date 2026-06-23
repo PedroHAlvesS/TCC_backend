@@ -1,15 +1,15 @@
 package br.com.rapidoja.tcc.service.impl;
 
-import br.com.rapidoja.tcc.dto.customer.CustomerRequestDTO;
-import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
-import br.com.rapidoja.tcc.dto.customer.CustomerUpdateDTO;
-import br.com.rapidoja.tcc.mapper.CustomerMapper;
-import br.com.rapidoja.tcc.mocks.customer.CustomerRequestMock;
-import br.com.rapidoja.tcc.mocks.customer.CustomerResponseMock;
-import br.com.rapidoja.tcc.mocks.customer.CustomerUpdateMock;
+import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManRequestDTO;
+import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManResponseDTO;
+import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManUpdateDTO;
+import br.com.rapidoja.tcc.mapper.DeliveryManMapper;
 import br.com.rapidoja.tcc.mocks.UserMock;
+import br.com.rapidoja.tcc.mocks.deliveryman.DeliveryManRequestMock;
+import br.com.rapidoja.tcc.mocks.deliveryman.DeliveryManResponseMock;
+import br.com.rapidoja.tcc.mocks.deliveryman.DeliveryManUpdateMock;
 import br.com.rapidoja.tcc.model.User;
-import br.com.rapidoja.tcc.repository.CustomerRepository;
+import br.com.rapidoja.tcc.repository.DeliveryManRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -30,19 +31,19 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
 @ExtendWith(MockitoExtension.class)
-class CustomerServiceImplTest {
+class DeliveryManServiceImplTest {
 
     @Mock
-    private CustomerRepository customerRepository;
+    private DeliveryManRepository deliveryManRepository;
 
     @Mock
-    private CustomerMapper customerMapper;
+    private DeliveryManMapper deliveryManMapper;
 
     @Mock
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private CustomerServiceImpl customerService;
+    private DeliveryManServiceImpl deliveryManService;
 
     @Nested
     @DisplayName("Given findAll is called")
@@ -50,36 +51,36 @@ class CustomerServiceImplTest {
         @Nested
         @DisplayName("When findAll is valid")
         class WhenFindAllIsValid {
-            final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
-            final List<CustomerResponseDTO> expectedCustomers = List.of(customerResponse);
+            final DeliveryManResponseDTO deliveryManResponse = DeliveryManResponseMock.getDeliveryManResponseDTO();
+            final List<DeliveryManResponseDTO> expectedDeliveryMen = List.of(deliveryManResponse);
             final User user = UserMock.getUser();
             final List<User> usersList = List.of(user);
-            private List<CustomerResponseDTO> result;
+            private List<DeliveryManResponseDTO> result;
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findAllEnabled()).thenReturn(usersList);
-                when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
+                when(deliveryManRepository.findAllEnabled()).thenReturn(usersList);
+                when(deliveryManMapper.toResponseDTO(user)).thenReturn(deliveryManResponse);
 
-                result = customerService.findAll();
+                result = deliveryManService.findAll();
             }
 
             @Test
-            @DisplayName("Then should return a list of customers")
-            void thenShouldReturnAListOfCustomers() {
-                assertEquals(expectedCustomers, result);
+            @DisplayName("Then should return a list of delivery men")
+            void thenShouldReturnAListOfDeliveryMen() {
+                assertEquals(expectedDeliveryMen, result);
             }
 
             @Test
             @DisplayName("Then should call repository")
             void thenShouldCallRepository() {
-                verify(customerRepository).findAllEnabled();
+                verify(deliveryManRepository).findAllEnabled();
             }
 
             @Test
             @DisplayName("Then should call mapper")
             void thenShouldCallMapper() {
-                verify(customerMapper).toResponseDTO(user);
+                verify(deliveryManMapper).toResponseDTO(user);
             }
         }
     }
@@ -91,35 +92,35 @@ class CustomerServiceImplTest {
         @DisplayName("When findById is valid")
         class WhenFindByIdIsValid {
             final Long id = 1L;
-            final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
+            final DeliveryManResponseDTO deliveryManResponse = DeliveryManResponseMock.getDeliveryManResponseDTO();
             final User user = UserMock.getUser();
-            private Optional<CustomerResponseDTO> result;
+            private Optional<DeliveryManResponseDTO> result;
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
-                when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
+                when(deliveryManRepository.findEnabledById(id)).thenReturn(Optional.of(user));
+                when(deliveryManMapper.toResponseDTO(user)).thenReturn(deliveryManResponse);
 
-                result = customerService.findById(id);
+                result = deliveryManService.findById(id);
             }
 
             @Test
-            @DisplayName("Then should return customer")
-            void thenShouldReturnCustomer() {
+            @DisplayName("Then should return delivery man")
+            void thenShouldReturnDeliveryMan() {
                 assertTrue(result.isPresent());
-                assertEquals(customerResponse, result.get());
+                assertEquals(deliveryManResponse, result.get());
             }
 
             @Test
             @DisplayName("Then should call repository")
             void thenShouldCallRepository() {
-                verify(customerRepository).findEnabledById(id);
+                verify(deliveryManRepository).findEnabledById(id);
             }
 
             @Test
             @DisplayName("Then should call mapper")
             void thenShouldCallMapper() {
-                verify(customerMapper).toResponseDTO(user);
+                verify(deliveryManMapper).toResponseDTO(user);
             }
         }
     }
@@ -131,35 +132,35 @@ class CustomerServiceImplTest {
         @DisplayName("When findByEmail is valid")
         class WhenFindByEmailIsValid {
             final String email = "test@email.com";
-            final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
+            final DeliveryManResponseDTO deliveryManResponse = DeliveryManResponseMock.getDeliveryManResponseDTO();
             final User user = UserMock.getUser();
-            private Optional<CustomerResponseDTO> result;
+            private Optional<DeliveryManResponseDTO> result;
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledByEmail(email)).thenReturn(Optional.of(user));
-                when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
+                when(deliveryManRepository.findEnabledByEmail(email)).thenReturn(Optional.of(user));
+                when(deliveryManMapper.toResponseDTO(user)).thenReturn(deliveryManResponse);
 
-                result = customerService.findByEmail(email);
+                result = deliveryManService.findByEmail(email);
             }
 
             @Test
-            @DisplayName("Then should return customer")
-            void thenShouldReturnCustomer() {
+            @DisplayName("Then should return delivery man")
+            void thenShouldReturnDeliveryMan() {
                 assertTrue(result.isPresent());
-                assertEquals(customerResponse, result.get());
+                assertEquals(deliveryManResponse, result.get());
             }
 
             @Test
             @DisplayName("Then should call repository")
             void thenShouldCallRepository() {
-                verify(customerRepository).findEnabledByEmail(email);
+                verify(deliveryManRepository).findEnabledByEmail(email);
             }
 
             @Test
             @DisplayName("Then should call mapper")
             void thenShouldCallMapper() {
-                verify(customerMapper).toResponseDTO(user);
+                verify(deliveryManMapper).toResponseDTO(user);
             }
         }
     }
@@ -170,33 +171,33 @@ class CustomerServiceImplTest {
         @Nested
         @DisplayName("When create is valid")
         class WhenCreateIsValid {
-            final CustomerRequestDTO customerRequestDTO = CustomerRequestMock.getCustomerRequestDTO();
-            final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
+            final DeliveryManRequestDTO deliveryManRequestDTO = DeliveryManRequestMock.getDeliveryManRequestDTO();
+            final DeliveryManResponseDTO deliveryManResponse = DeliveryManResponseMock.getDeliveryManResponseDTO();
             final User user = UserMock.getUser();
-            private CustomerResponseDTO result;
+            private DeliveryManResponseDTO result;
 
             @BeforeEach
             void setUp() {
 
-                when(customerRepository.existsByEmail(customerRequestDTO.getEmail())).thenReturn(false);
-                when(customerMapper.toEntity(customerRequestDTO)).thenReturn(user);
+                when(deliveryManRepository.existsByEmail(deliveryManRequestDTO.getEmail())).thenReturn(false);
+                when(deliveryManMapper.toEntity(deliveryManRequestDTO)).thenReturn(user);
                 when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-                when(customerRepository.save(user)).thenReturn(user);
-                when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
+                when(deliveryManRepository.save(user)).thenReturn(user);
+                when(deliveryManMapper.toResponseDTO(user)).thenReturn(deliveryManResponse);
 
-                result = customerService.create(customerRequestDTO);
+                result = deliveryManService.create(deliveryManRequestDTO);
             }
 
             @Test
-            @DisplayName("Then should return created customer")
-            void thenShouldReturnCreatedCustomer() {
-                assertEquals(customerResponse, result);
+            @DisplayName("Then should return created delivery man")
+            void thenShouldReturnCreatedDeliveryMan() {
+                assertEquals(deliveryManResponse, result);
             }
 
             @Test
             @DisplayName("Then should check if email exists")
             void thenShouldCheckIfEmailExists() {
-                verify(customerRepository).existsByEmail(customerRequestDTO.getEmail());
+                verify(deliveryManRepository).existsByEmail(deliveryManRequestDTO.getEmail());
             }
 
             @Test
@@ -208,24 +209,24 @@ class CustomerServiceImplTest {
             @Test
             @DisplayName("Then should save user")
             void thenShouldSaveUser() {
-                verify(customerRepository).save(user);
+                verify(deliveryManRepository).save(user);
             }
         }
 
         @Nested
         @DisplayName("When create is invalid - email already exists")
         class WhenCreateIsInvalidEmailExists {
-            final CustomerRequestDTO customerRequestDTO = CustomerRequestMock.getCustomerRequestDTO();
+            final DeliveryManRequestDTO deliveryManRequestDTO = DeliveryManRequestMock.getDeliveryManRequestDTO();
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.existsByEmail(customerRequestDTO.getEmail())).thenReturn(true);
+                when(deliveryManRepository.existsByEmail(deliveryManRequestDTO.getEmail())).thenReturn(true);
             }
 
             @Test
             @DisplayName("Then should throw IllegalArgumentException")
             void thenShouldThrowIllegalArgumentException() {
-                assertThrows(IllegalArgumentException.class, () -> customerService.create(customerRequestDTO));
+                assertThrows(IllegalArgumentException.class, () -> deliveryManService.create(deliveryManRequestDTO));
             }
         }
     }
@@ -237,38 +238,38 @@ class CustomerServiceImplTest {
         @DisplayName("When update is valid")
         class WhenUpdateIsValid {
             final Long id = 1L;
-            final CustomerUpdateDTO customerUpdateDTO = CustomerUpdateMock.getCustomerUpdateDTO();
-            final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
+            final DeliveryManUpdateDTO deliveryManUpdateDTO = DeliveryManUpdateMock.getDeliveryManUpdateDTO();
+            final DeliveryManResponseDTO deliveryManResponse = DeliveryManResponseMock.getDeliveryManResponseDTO();
             final User user = UserMock.getUser();
-            private CustomerResponseDTO result;
+            private DeliveryManResponseDTO result;
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
-                when(customerRepository.existsByEmailAndNotId(customerUpdateDTO.getEmail(), id)).thenReturn(false);
+                when(deliveryManRepository.findEnabledById(id)).thenReturn(Optional.of(user));
+                when(deliveryManRepository.existsByEmailAndNotId(deliveryManUpdateDTO.getEmail(), id)).thenReturn(false);
                 when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-                when(customerRepository.save(user)).thenReturn(user);
-                when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
+                when(deliveryManRepository.save(user)).thenReturn(user);
+                when(deliveryManMapper.toResponseDTO(user)).thenReturn(deliveryManResponse);
 
-                result = customerService.update(id, customerUpdateDTO);
+                result = deliveryManService.update(id, deliveryManUpdateDTO);
             }
 
             @Test
-            @DisplayName("Then should return updated customer")
-            void thenShouldReturnUpdatedCustomer() {
-                assertEquals(customerResponse, result);
+            @DisplayName("Then should return updated delivery man")
+            void thenShouldReturnUpdatedDeliveryMan() {
+                assertEquals(deliveryManResponse, result);
             }
 
             @Test
             @DisplayName("Then should call repository to find user")
             void thenShouldCallRepositoryToFindUser() {
-                verify(customerRepository).findEnabledById(id);
+                verify(deliveryManRepository).findEnabledById(id);
             }
 
             @Test
             @DisplayName("Then should check if email exists for other user")
             void thenShouldCheckIfEmailExistsForOtherUser() {
-                verify(customerRepository).existsByEmailAndNotId(customerUpdateDTO.getEmail(), id);
+                verify(deliveryManRepository).existsByEmailAndNotId(deliveryManUpdateDTO.getEmail(), id);
             }
 
             @Test
@@ -280,25 +281,25 @@ class CustomerServiceImplTest {
             @Test
             @DisplayName("Then should save user")
             void thenShouldSaveUser() {
-                verify(customerRepository).save(any(User.class));
+                verify(deliveryManRepository).save(any(User.class));
             }
         }
 
         @Nested
-        @DisplayName("When update is invalid - customer not found")
-        class WhenUpdateIsInvalidCustomerNotFound {
+        @DisplayName("When update is invalid - delivery man not found")
+        class WhenUpdateIsInvalidDeliveryManNotFound {
             final Long id = 999L;
-            final CustomerUpdateDTO customerUpdateDTO = new CustomerUpdateDTO();
+            final DeliveryManUpdateDTO deliveryManUpdateDTO = new DeliveryManUpdateDTO();
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.empty());
+                when(deliveryManRepository.findEnabledById(id)).thenReturn(Optional.empty());
             }
 
             @Test
             @DisplayName("Then should throw IllegalArgumentException")
             void thenShouldThrowIllegalArgumentException() {
-                assertThrows(IllegalArgumentException.class, () -> customerService.update(id, customerUpdateDTO));
+                assertThrows(IllegalArgumentException.class, () -> deliveryManService.update(id, deliveryManUpdateDTO));
             }
         }
 
@@ -306,19 +307,19 @@ class CustomerServiceImplTest {
         @DisplayName("When update is invalid - email already in use")
         class WhenUpdateIsInvalidEmailInUse {
             final Long id = 1L;
-            final CustomerUpdateDTO customerUpdateDTO = CustomerUpdateMock.getCustomerUpdateDTO();
+            final DeliveryManUpdateDTO deliveryManUpdateDTO = DeliveryManUpdateMock.getDeliveryManUpdateDTO();
             final User user = UserMock.getUser();
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
-                when(customerRepository.existsByEmailAndNotId(customerUpdateDTO.getEmail(), id)).thenReturn(true);
+                when(deliveryManRepository.findEnabledById(id)).thenReturn(Optional.of(user));
+                when(deliveryManRepository.existsByEmailAndNotId(deliveryManUpdateDTO.getEmail(), id)).thenReturn(true);
             }
 
             @Test
             @DisplayName("Then should throw IllegalArgumentException")
             void thenShouldThrowIllegalArgumentException() {
-                assertThrows(IllegalArgumentException.class, () -> customerService.update(id, customerUpdateDTO));
+                assertThrows(IllegalArgumentException.class, () -> deliveryManService.update(id, deliveryManUpdateDTO));
             }
         }
     }
@@ -334,15 +335,15 @@ class CustomerServiceImplTest {
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
+                when(deliveryManRepository.findEnabledById(id)).thenReturn(Optional.of(user));
 
-                customerService.delete(id);
+                deliveryManService.delete(id);
             }
 
             @Test
             @DisplayName("Then should call repository to find user")
             void thenShouldCallRepositoryToFindUser() {
-                verify(customerRepository).findEnabledById(id);
+                verify(deliveryManRepository).findEnabledById(id);
             }
 
             @Test
@@ -354,24 +355,24 @@ class CustomerServiceImplTest {
             @Test
             @DisplayName("Then should save user")
             void thenShouldSaveUser() {
-                verify(customerRepository).save(user);
+                verify(deliveryManRepository).save(user);
             }
         }
 
         @Nested
-        @DisplayName("When delete is invalid - customer not found")
-        class WhenDeleteIsInvalidCustomerNotFound {
+        @DisplayName("When delete is invalid - delivery man not found")
+        class WhenDeleteIsInvalidDeliveryManNotFound {
             final Long id = 999L;
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.empty());
+                when(deliveryManRepository.findEnabledById(id)).thenReturn(Optional.empty());
             }
 
             @Test
             @DisplayName("Then should throw IllegalArgumentException")
             void thenShouldThrowIllegalArgumentException() {
-                assertThrows(IllegalArgumentException.class, () -> customerService.delete(id));
+                assertThrows(IllegalArgumentException.class, () -> deliveryManService.delete(id));
             }
         }
     }

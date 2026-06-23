@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<User, Long> {
+public interface AdminRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT u FROM User u WHERE u.enabled = true AND u.profile = 'CUSTOMER'")
+    @Query("SELECT u FROM User u WHERE u.enabled = true AND u.profile = 'ADMIN'")
     List<User> findAllEnabled();
 
-    @Query("SELECT u FROM User u WHERE u.id = :id AND u.enabled = true AND u.profile = 'CUSTOMER'")
+    @Query("SELECT u FROM User u WHERE u.id = :id AND u.enabled = true AND u.profile = 'ADMIN'")
     Optional<User> findEnabledById(Long id);
 
-    @Query("SELECT u FROM User u WHERE u.email = :email AND u.enabled = true AND u.profile = 'CUSTOMER'")
+    @Query("SELECT u FROM User u WHERE u.email = :email AND u.enabled = true AND u.profile = 'ADMIN'")
     Optional<User> findEnabledByEmail(String email);
 
     Optional<User> findByEmail(String email);

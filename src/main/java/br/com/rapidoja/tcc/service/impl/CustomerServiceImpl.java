@@ -1,8 +1,8 @@
 package br.com.rapidoja.tcc.service.impl;
 
-import br.com.rapidoja.tcc.dto.CustomerRequestDTO;
-import br.com.rapidoja.tcc.dto.CustomerResponseDTO;
-import br.com.rapidoja.tcc.dto.CustomerUpdateDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerRequestDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerUpdateDTO;
 import br.com.rapidoja.tcc.mapper.CustomerMapper;
 import br.com.rapidoja.tcc.model.Profile;
 import br.com.rapidoja.tcc.model.User;

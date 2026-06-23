@@ -1,11 +1,11 @@
 package br.com.rapidoja.tcc.controller;
 
-import br.com.rapidoja.tcc.dto.CustomerRequestDTO;
-import br.com.rapidoja.tcc.dto.CustomerResponseDTO;
-import br.com.rapidoja.tcc.dto.CustomerUpdateDTO;
-import br.com.rapidoja.tcc.mocks.CustomerRequestMock;
-import br.com.rapidoja.tcc.mocks.CustomerResponseMock;
-import br.com.rapidoja.tcc.mocks.CustomerUpdateMock;
+import br.com.rapidoja.tcc.dto.customer.CustomerRequestDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerUpdateDTO;
+import br.com.rapidoja.tcc.mocks.customer.CustomerRequestMock;
+import br.com.rapidoja.tcc.mocks.customer.CustomerResponseMock;
+import br.com.rapidoja.tcc.mocks.customer.CustomerUpdateMock;
 import br.com.rapidoja.tcc.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

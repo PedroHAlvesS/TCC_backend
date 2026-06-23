@@ -1,8 +1,8 @@
 package br.com.rapidoja.tcc.controller;
 
-import br.com.rapidoja.tcc.dto.CustomerRequestDTO;
-import br.com.rapidoja.tcc.dto.CustomerResponseDTO;
-import br.com.rapidoja.tcc.dto.CustomerUpdateDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerRequestDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerUpdateDTO;
 import br.com.rapidoja.tcc.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

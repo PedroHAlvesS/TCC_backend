@@ -1,4 +1,4 @@
-package br.com.rapidoja.tcc.dto;
+package br.com.rapidoja.tcc.dto.deliveryman;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerUpdateDTO {
+public class DeliveryManUpdateDTO {
 
     private String email;
 

@@ -26,6 +26,13 @@ class ValidateTest {
             boolean result = Validate.isValidEmail("teste.gmail.com");
             assertFalse(result);
         }
+
+        @Test
+        @DisplayName("Then should return false when email is blank")
+        void ThenShouldReturnFalseWhenEmailIsBlank() {
+            boolean result = Validate.isValidEmail("");
+            assertFalse(result);
+        }
     }
 
     @Nested
@@ -45,6 +52,13 @@ class ValidateTest {
             boolean result = Validate.isValidPhone("319876X4321");
             assertFalse(result);
         }
+
+        @Test
+        @DisplayName("Then should return false when phone is blank")
+        void ThenShouldReturnFalseWhenPhoneIsBlank() {
+            boolean result = Validate.isValidPhone("");
+            assertFalse(result);
+        }
     }
 
     @Nested
@@ -62,6 +76,13 @@ class ValidateTest {
         @DisplayName("Then should return false when password is invalid")
         void ThenShouldReturnFalseWhenPasswordIsInvalid() {
             boolean result = Validate.isValidPassword("123");
+            assertFalse(result);
+        }
+
+        @Test
+        @DisplayName("Then should return false when password is blank")
+        void ThenShouldReturnFalseWhenPasswordIsBlank() {
+            boolean result = Validate.isValidPassword("");
             assertFalse(result);
         }
     }

@@ -1,4 +1,4 @@
-package br.com.rapidoja.tcc.dto;
+package br.com.rapidoja.tcc.dto.customer;
 
 import br.com.rapidoja.tcc.model.Profile;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package br.com.rapidoja.tcc.dto;
+package br.com.rapidoja.tcc.dto.deliveryman;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerRequestDTO {
+public class DeliveryManRequestDTO {
 
     @NotBlank(message = "Name is required")
     @Size(min = 3, max = 100, message = "Name must be between 3 and 100 characters")

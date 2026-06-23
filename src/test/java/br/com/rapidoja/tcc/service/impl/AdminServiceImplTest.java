@@ -1,15 +1,15 @@
 package br.com.rapidoja.tcc.service.impl;
 
-import br.com.rapidoja.tcc.dto.customer.CustomerRequestDTO;
-import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
-import br.com.rapidoja.tcc.dto.customer.CustomerUpdateDTO;
-import br.com.rapidoja.tcc.mapper.CustomerMapper;
-import br.com.rapidoja.tcc.mocks.customer.CustomerRequestMock;
-import br.com.rapidoja.tcc.mocks.customer.CustomerResponseMock;
-import br.com.rapidoja.tcc.mocks.customer.CustomerUpdateMock;
+import br.com.rapidoja.tcc.dto.admin.AdminRequestDTO;
+import br.com.rapidoja.tcc.dto.admin.AdminResponseDTO;
+import br.com.rapidoja.tcc.dto.admin.AdminUpdateDTO;
+import br.com.rapidoja.tcc.mapper.AdminMapper;
+import br.com.rapidoja.tcc.mocks.admin.AdminRequestMock;
+import br.com.rapidoja.tcc.mocks.admin.AdminResponseMock;
+import br.com.rapidoja.tcc.mocks.admin.AdminUpdateMock;
 import br.com.rapidoja.tcc.mocks.UserMock;
 import br.com.rapidoja.tcc.model.User;
-import br.com.rapidoja.tcc.repository.CustomerRepository;
+import br.com.rapidoja.tcc.repository.AdminRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -30,19 +31,19 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
 @ExtendWith(MockitoExtension.class)
-class CustomerServiceImplTest {
+class AdminServiceImplTest {
 
     @Mock
-    private CustomerRepository customerRepository;
+    private AdminRepository adminRepository;
 
     @Mock
-    private CustomerMapper customerMapper;
+    private AdminMapper adminMapper;
 
     @Mock
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private CustomerServiceImpl customerService;
+    private AdminServiceImpl adminService;
 
     @Nested
     @DisplayName("Given findAll is called")
@@ -50,36 +51,36 @@ class CustomerServiceImplTest {
         @Nested
         @DisplayName("When findAll is valid")
         class WhenFindAllIsValid {
-            final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
-            final List<CustomerResponseDTO> expectedCustomers = List.of(customerResponse);
+            final AdminResponseDTO adminResponse = AdminResponseMock.getAdminResponseDTO();
+            final List<AdminResponseDTO> expectedAdmins = List.of(adminResponse);
             final User user = UserMock.getUser();
             final List<User> usersList = List.of(user);
-            private List<CustomerResponseDTO> result;
+            private List<AdminResponseDTO> result;
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findAllEnabled()).thenReturn(usersList);
-                when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
+                when(adminRepository.findAllEnabled()).thenReturn(usersList);
+                when(adminMapper.toResponseDTO(user)).thenReturn(adminResponse);
 
-                result = customerService.findAll();
+                result = adminService.findAll();
             }
 
             @Test
-            @DisplayName("Then should return a list of customers")
-            void thenShouldReturnAListOfCustomers() {
-                assertEquals(expectedCustomers, result);
+            @DisplayName("Then should return a list of admins")
+            void thenShouldReturnAListOfAdmins() {
+                assertEquals(expectedAdmins, result);
             }
 
             @Test
             @DisplayName("Then should call repository")
             void thenShouldCallRepository() {
-                verify(customerRepository).findAllEnabled();
+                verify(adminRepository).findAllEnabled();
             }
 
             @Test
             @DisplayName("Then should call mapper")
             void thenShouldCallMapper() {
-                verify(customerMapper).toResponseDTO(user);
+                verify(adminMapper).toResponseDTO(user);
             }
         }
     }
@@ -91,35 +92,35 @@ class CustomerServiceImplTest {
         @DisplayName("When findById is valid")
         class WhenFindByIdIsValid {
             final Long id = 1L;
-            final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
+            final AdminResponseDTO adminResponse = AdminResponseMock.getAdminResponseDTO();
             final User user = UserMock.getUser();
-            private Optional<CustomerResponseDTO> result;
+            private Optional<AdminResponseDTO> result;
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
-                when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
+                when(adminRepository.findEnabledById(id)).thenReturn(Optional.of(user));
+                when(adminMapper.toResponseDTO(user)).thenReturn(adminResponse);
 
-                result = customerService.findById(id);
+                result = adminService.findById(id);
             }
 
             @Test
-            @DisplayName("Then should return customer")
-            void thenShouldReturnCustomer() {
+            @DisplayName("Then should return admin")
+            void thenShouldReturnAdmin() {
                 assertTrue(result.isPresent());
-                assertEquals(customerResponse, result.get());
+                assertEquals(adminResponse, result.get());
             }
 
             @Test
             @DisplayName("Then should call repository")
             void thenShouldCallRepository() {
-                verify(customerRepository).findEnabledById(id);
+                verify(adminRepository).findEnabledById(id);
             }
 
             @Test
             @DisplayName("Then should call mapper")
             void thenShouldCallMapper() {
-                verify(customerMapper).toResponseDTO(user);
+                verify(adminMapper).toResponseDTO(user);
             }
         }
     }
@@ -131,35 +132,35 @@ class CustomerServiceImplTest {
         @DisplayName("When findByEmail is valid")
         class WhenFindByEmailIsValid {
             final String email = "test@email.com";
-            final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
+            final AdminResponseDTO adminResponse = AdminResponseMock.getAdminResponseDTO();
             final User user = UserMock.getUser();
-            private Optional<CustomerResponseDTO> result;
+            private Optional<AdminResponseDTO> result;
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledByEmail(email)).thenReturn(Optional.of(user));
-                when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
+                when(adminRepository.findEnabledByEmail(email)).thenReturn(Optional.of(user));
+                when(adminMapper.toResponseDTO(user)).thenReturn(adminResponse);
 
-                result = customerService.findByEmail(email);
+                result = adminService.findByEmail(email);
             }
 
             @Test
-            @DisplayName("Then should return customer")
-            void thenShouldReturnCustomer() {
+            @DisplayName("Then should return admin")
+            void thenShouldReturnAdmin() {
                 assertTrue(result.isPresent());
-                assertEquals(customerResponse, result.get());
+                assertEquals(adminResponse, result.get());
             }
 
             @Test
             @DisplayName("Then should call repository")
             void thenShouldCallRepository() {
-                verify(customerRepository).findEnabledByEmail(email);
+                verify(adminRepository).findEnabledByEmail(email);
             }
 
             @Test
             @DisplayName("Then should call mapper")
             void thenShouldCallMapper() {
-                verify(customerMapper).toResponseDTO(user);
+                verify(adminMapper).toResponseDTO(user);
             }
         }
     }
@@ -170,33 +171,33 @@ class CustomerServiceImplTest {
         @Nested
         @DisplayName("When create is valid")
         class WhenCreateIsValid {
-            final CustomerRequestDTO customerRequestDTO = CustomerRequestMock.getCustomerRequestDTO();
-            final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
+            final AdminRequestDTO adminRequestDTO = AdminRequestMock.getAdminRequestDTO();
+            final AdminResponseDTO adminResponse = AdminResponseMock.getAdminResponseDTO();
             final User user = UserMock.getUser();
-            private CustomerResponseDTO result;
+            private AdminResponseDTO result;
 
             @BeforeEach
             void setUp() {
 
-                when(customerRepository.existsByEmail(customerRequestDTO.getEmail())).thenReturn(false);
-                when(customerMapper.toEntity(customerRequestDTO)).thenReturn(user);
+                when(adminRepository.existsByEmail(adminRequestDTO.getEmail())).thenReturn(false);
+                when(adminMapper.toEntity(adminRequestDTO)).thenReturn(user);
                 when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-                when(customerRepository.save(user)).thenReturn(user);
-                when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
+                when(adminRepository.save(user)).thenReturn(user);
+                when(adminMapper.toResponseDTO(user)).thenReturn(adminResponse);
 
-                result = customerService.create(customerRequestDTO);
+                result = adminService.create(adminRequestDTO);
             }
 
             @Test
-            @DisplayName("Then should return created customer")
-            void thenShouldReturnCreatedCustomer() {
-                assertEquals(customerResponse, result);
+            @DisplayName("Then should return created admin")
+            void thenShouldReturnCreatedAdmin() {
+                assertEquals(adminResponse, result);
             }
 
             @Test
             @DisplayName("Then should check if email exists")
             void thenShouldCheckIfEmailExists() {
-                verify(customerRepository).existsByEmail(customerRequestDTO.getEmail());
+                verify(adminRepository).existsByEmail(adminRequestDTO.getEmail());
             }
 
             @Test
@@ -208,24 +209,24 @@ class CustomerServiceImplTest {
             @Test
             @DisplayName("Then should save user")
             void thenShouldSaveUser() {
-                verify(customerRepository).save(user);
+                verify(adminRepository).save(user);
             }
         }
 
         @Nested
         @DisplayName("When create is invalid - email already exists")
         class WhenCreateIsInvalidEmailExists {
-            final CustomerRequestDTO customerRequestDTO = CustomerRequestMock.getCustomerRequestDTO();
+            final AdminRequestDTO adminRequestDTO = AdminRequestMock.getAdminRequestDTO();
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.existsByEmail(customerRequestDTO.getEmail())).thenReturn(true);
+                when(adminRepository.existsByEmail(adminRequestDTO.getEmail())).thenReturn(true);
             }
 
             @Test
             @DisplayName("Then should throw IllegalArgumentException")
             void thenShouldThrowIllegalArgumentException() {
-                assertThrows(IllegalArgumentException.class, () -> customerService.create(customerRequestDTO));
+                assertThrows(IllegalArgumentException.class, () -> adminService.create(adminRequestDTO));
             }
         }
     }
@@ -237,38 +238,38 @@ class CustomerServiceImplTest {
         @DisplayName("When update is valid")
         class WhenUpdateIsValid {
             final Long id = 1L;
-            final CustomerUpdateDTO customerUpdateDTO = CustomerUpdateMock.getCustomerUpdateDTO();
-            final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
+            final AdminUpdateDTO adminUpdateDTO = AdminUpdateMock.getAdminUpdateDTO();
+            final AdminResponseDTO adminResponse = AdminResponseMock.getAdminResponseDTO();
             final User user = UserMock.getUser();
-            private CustomerResponseDTO result;
+            private AdminResponseDTO result;
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
-                when(customerRepository.existsByEmailAndNotId(customerUpdateDTO.getEmail(), id)).thenReturn(false);
+                when(adminRepository.findEnabledById(id)).thenReturn(Optional.of(user));
+                when(adminRepository.existsByEmailAndNotId(adminUpdateDTO.getEmail(), id)).thenReturn(false);
                 when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-                when(customerRepository.save(user)).thenReturn(user);
-                when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
+                when(adminRepository.save(user)).thenReturn(user);
+                when(adminMapper.toResponseDTO(user)).thenReturn(adminResponse);
 
-                result = customerService.update(id, customerUpdateDTO);
+                result = adminService.update(id, adminUpdateDTO);
             }
 
             @Test
-            @DisplayName("Then should return updated customer")
-            void thenShouldReturnUpdatedCustomer() {
-                assertEquals(customerResponse, result);
+            @DisplayName("Then should return updated admin")
+            void thenShouldReturnUpdatedAdmin() {
+                assertEquals(adminResponse, result);
             }
 
             @Test
             @DisplayName("Then should call repository to find user")
             void thenShouldCallRepositoryToFindUser() {
-                verify(customerRepository).findEnabledById(id);
+                verify(adminRepository).findEnabledById(id);
             }
 
             @Test
             @DisplayName("Then should check if email exists for other user")
             void thenShouldCheckIfEmailExistsForOtherUser() {
-                verify(customerRepository).existsByEmailAndNotId(customerUpdateDTO.getEmail(), id);
+                verify(adminRepository).existsByEmailAndNotId(adminUpdateDTO.getEmail(), id);
             }
 
             @Test
@@ -280,25 +281,25 @@ class CustomerServiceImplTest {
             @Test
             @DisplayName("Then should save user")
             void thenShouldSaveUser() {
-                verify(customerRepository).save(any(User.class));
+                verify(adminRepository).save(any(User.class));
             }
         }
 
         @Nested
-        @DisplayName("When update is invalid - customer not found")
-        class WhenUpdateIsInvalidCustomerNotFound {
+        @DisplayName("When update is invalid - admin not found")
+        class WhenUpdateIsInvalidAdminNotFound {
             final Long id = 999L;
-            final CustomerUpdateDTO customerUpdateDTO = new CustomerUpdateDTO();
+            final AdminUpdateDTO adminUpdateDTO = new AdminUpdateDTO();
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.empty());
+                when(adminRepository.findEnabledById(id)).thenReturn(Optional.empty());
             }
 
             @Test
             @DisplayName("Then should throw IllegalArgumentException")
             void thenShouldThrowIllegalArgumentException() {
-                assertThrows(IllegalArgumentException.class, () -> customerService.update(id, customerUpdateDTO));
+                assertThrows(IllegalArgumentException.class, () -> adminService.update(id, adminUpdateDTO));
             }
         }
 
@@ -306,19 +307,19 @@ class CustomerServiceImplTest {
         @DisplayName("When update is invalid - email already in use")
         class WhenUpdateIsInvalidEmailInUse {
             final Long id = 1L;
-            final CustomerUpdateDTO customerUpdateDTO = CustomerUpdateMock.getCustomerUpdateDTO();
+            final AdminUpdateDTO adminUpdateDTO = AdminUpdateMock.getAdminUpdateDTO();
             final User user = UserMock.getUser();
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
-                when(customerRepository.existsByEmailAndNotId(customerUpdateDTO.getEmail(), id)).thenReturn(true);
+                when(adminRepository.findEnabledById(id)).thenReturn(Optional.of(user));
+                when(adminRepository.existsByEmailAndNotId(adminUpdateDTO.getEmail(), id)).thenReturn(true);
             }
 
             @Test
             @DisplayName("Then should throw IllegalArgumentException")
             void thenShouldThrowIllegalArgumentException() {
-                assertThrows(IllegalArgumentException.class, () -> customerService.update(id, customerUpdateDTO));
+                assertThrows(IllegalArgumentException.class, () -> adminService.update(id, adminUpdateDTO));
             }
         }
     }
@@ -334,15 +335,15 @@ class CustomerServiceImplTest {
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
+                when(adminRepository.findEnabledById(id)).thenReturn(Optional.of(user));
 
-                customerService.delete(id);
+                adminService.delete(id);
             }
 
             @Test
             @DisplayName("Then should call repository to find user")
             void thenShouldCallRepositoryToFindUser() {
-                verify(customerRepository).findEnabledById(id);
+                verify(adminRepository).findEnabledById(id);
             }
 
             @Test
@@ -354,24 +355,24 @@ class CustomerServiceImplTest {
             @Test
             @DisplayName("Then should save user")
             void thenShouldSaveUser() {
-                verify(customerRepository).save(user);
+                verify(adminRepository).save(user);
             }
         }
 
         @Nested
-        @DisplayName("When delete is invalid - customer not found")
-        class WhenDeleteIsInvalidCustomerNotFound {
+        @DisplayName("When delete is invalid - admin not found")
+        class WhenDeleteIsInvalidAdminNotFound {
             final Long id = 999L;
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.empty());
+                when(adminRepository.findEnabledById(id)).thenReturn(Optional.empty());
             }
 
             @Test
             @DisplayName("Then should throw IllegalArgumentException")
             void thenShouldThrowIllegalArgumentException() {
-                assertThrows(IllegalArgumentException.class, () -> customerService.delete(id));
+                assertThrows(IllegalArgumentException.class, () -> adminService.delete(id));
             }
         }
     }

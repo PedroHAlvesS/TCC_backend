@@ -1,6 +1,6 @@
-package br.com.rapidoja.tcc.mocks;
+package br.com.rapidoja.tcc.mocks.customer;
 
-import br.com.rapidoja.tcc.dto.CustomerRequestDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerRequestDTO;
 
 public class CustomerRequestMock {
     public static CustomerRequestDTO getCustomerRequestDTO() {

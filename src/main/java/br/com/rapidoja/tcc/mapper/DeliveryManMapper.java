@@ -1,7 +1,7 @@
 package br.com.rapidoja.tcc.mapper;
 
-import br.com.rapidoja.tcc.dto.customer.CustomerRequestDTO;
-import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
+import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManRequestDTO;
+import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManResponseDTO;
 import br.com.rapidoja.tcc.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -10,10 +10,10 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
     componentModel = "spring",
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
-public interface CustomerMapper {
+public interface DeliveryManMapper {
 
-    CustomerResponseDTO toResponseDTO(User user);
+    DeliveryManResponseDTO toResponseDTO(User user);
 
-    User toEntity(CustomerRequestDTO customerRequestDTO);
+    User toEntity(DeliveryManRequestDTO deliveryManRequestDTO);
 
 }

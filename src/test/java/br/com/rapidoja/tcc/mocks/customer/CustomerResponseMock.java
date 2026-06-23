@@ -1,6 +1,6 @@
-package br.com.rapidoja.tcc.mocks;
+package br.com.rapidoja.tcc.mocks.customer;
 
-import br.com.rapidoja.tcc.dto.CustomerResponseDTO;
+import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
 import br.com.rapidoja.tcc.model.Profile;
 
 import java.time.LocalDateTime;
