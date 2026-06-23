@@ -3,7 +3,7 @@ package br.com.rapidoja.tcc.controller;
 import br.com.rapidoja.tcc.dto.auth.AuthRequestDTO;
 import br.com.rapidoja.tcc.dto.auth.AuthResponseDTO;
 import br.com.rapidoja.tcc.model.User;
-import br.com.rapidoja.tcc.repository.AdminRepository;
+import br.com.rapidoja.tcc.repository.UserRepository;
 import br.com.rapidoja.tcc.security.TokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
-    private final AdminRepository adminRepository;
+    private final UserRepository userRepository;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthRequestDTO authRequestDTO) {
@@ -33,7 +33,7 @@ public class AuthController {
             
             authenticationManager.authenticate(usernamePassword);
             
-            User user = adminRepository.findByEmail(authRequestDTO.getEmail())
+            User user = userRepository.findByEmail(authRequestDTO.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
             
             String token = tokenService.generateToken(user.getEmail(), user.getProfile().name());

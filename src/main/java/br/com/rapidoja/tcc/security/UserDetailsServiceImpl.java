@@ -1,7 +1,7 @@
 package br.com.rapidoja.tcc.security;
 
 import br.com.rapidoja.tcc.model.User;
-import br.com.rapidoja.tcc.repository.AdminRepository;
+import br.com.rapidoja.tcc.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,15 +12,15 @@ import java.util.Collections;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final AdminRepository adminRepository;
+    private final UserRepository userRepository;
 
-    public UserDetailsServiceImpl(AdminRepository adminRepository) {
-        this.adminRepository = adminRepository;
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = adminRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return org.springframework.security.core.userdetails.User.builder()

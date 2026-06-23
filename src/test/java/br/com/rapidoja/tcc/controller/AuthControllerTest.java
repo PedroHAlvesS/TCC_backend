@@ -6,7 +6,7 @@ import br.com.rapidoja.tcc.mocks.auth.AuthRequestMock;
 import br.com.rapidoja.tcc.mocks.auth.AuthResponseMock;
 import br.com.rapidoja.tcc.model.User;
 import br.com.rapidoja.tcc.model.Profile;
-import br.com.rapidoja.tcc.repository.AdminRepository;
+import br.com.rapidoja.tcc.repository.UserRepository;
 import br.com.rapidoja.tcc.security.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,7 +35,7 @@ class AuthControllerTest {
     private TokenService tokenService;
 
     @MockitoBean
-    private AdminRepository adminRepository;
+    private UserRepository userRepository;
 
     @Autowired
     MockMvc mockMvc;
@@ -46,7 +46,7 @@ class AuthControllerTest {
 
     @BeforeEach
     void setUp() {
-        authController = new AuthController(authenticationManager, tokenService, adminRepository);
+        authController = new AuthController(authenticationManager, tokenService, userRepository);
     }
 
     @Nested
@@ -65,7 +65,7 @@ class AuthControllerTest {
                 user.setEmail("admin@rapidoja.com");
                 user.setProfile(Profile.ADMIN);
 
-                when(adminRepository.findByEmail(authRequestDTO.getEmail())).thenReturn(java.util.Optional.of(user));
+                when(userRepository.findByEmail(authRequestDTO.getEmail())).thenReturn(java.util.Optional.of(user));
                 when(tokenService.generateToken(user.getEmail(), user.getProfile().name())).thenReturn("mock-jwt-token");
 
                 result = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/login")
@@ -121,7 +121,7 @@ class AuthControllerTest {
 
             @BeforeEach
             void setUp() throws Exception {
-                when(adminRepository.findByEmail(authRequestDTO.getEmail())).thenReturn(java.util.Optional.empty());
+                when(userRepository.findByEmail(authRequestDTO.getEmail())).thenReturn(java.util.Optional.empty());
 
                 result = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/login")
                         .header("Content-Type", "application/json")
