@@ -4,10 +4,10 @@ import br.com.rapidoja.tcc.dto.customer.CustomerRequestDTO;
 import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
 import br.com.rapidoja.tcc.dto.customer.CustomerUpdateDTO;
 import br.com.rapidoja.tcc.mapper.CustomerMapper;
+import br.com.rapidoja.tcc.mocks.UserMock;
 import br.com.rapidoja.tcc.mocks.customer.CustomerRequestMock;
 import br.com.rapidoja.tcc.mocks.customer.CustomerResponseMock;
 import br.com.rapidoja.tcc.mocks.customer.CustomerUpdateMock;
-import br.com.rapidoja.tcc.mocks.UserMock;
 import br.com.rapidoja.tcc.model.User;
 import br.com.rapidoja.tcc.repository.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceImplTest {
