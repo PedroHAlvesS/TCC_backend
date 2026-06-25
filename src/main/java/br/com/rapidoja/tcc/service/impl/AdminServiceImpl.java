@@ -27,19 +27,6 @@ public class AdminServiceImpl implements AdminService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<AdminResponseDTO> findAll() {
-        return adminRepository.findAllEnabled().stream()
-                .map(adminMapper::toResponseDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<AdminResponseDTO> findById(Long id) {
-        return adminRepository.findEnabledById(id)
-                .map(adminMapper::toResponseDTO);
-    }
-
-    @Override
     public Optional<AdminResponseDTO> findByEmail(String email) {
         return adminRepository.findEnabledByEmail(email)
                 .map(adminMapper::toResponseDTO);

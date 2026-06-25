@@ -9,10 +9,6 @@ import java.util.Optional;
 
 public interface AdminService {
 
-    List<AdminResponseDTO> findAll();
-
-    Optional<AdminResponseDTO> findById(Long id);
-
     Optional<AdminResponseDTO> findByEmail(String email);
 
     AdminResponseDTO create(AdminRequestDTO adminRequestDTO);
