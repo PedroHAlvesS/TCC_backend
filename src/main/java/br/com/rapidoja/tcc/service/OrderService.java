@@ -2,6 +2,7 @@ package br.com.rapidoja.tcc.service;
 
 import br.com.rapidoja.tcc.dto.order.OrderRequestDTO;
 import br.com.rapidoja.tcc.dto.order.OrderResponseDTO;
+import br.com.rapidoja.tcc.dto.order.OrderUpdateAssignDTO;
 import br.com.rapidoja.tcc.dto.order.OrderUpdateDTO;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface OrderService {
     OrderResponseDTO create(OrderRequestDTO orderRequestDTO);
 
     OrderResponseDTO update(Long id, OrderUpdateDTO orderUpdateDTO);
+
+    OrderResponseDTO updateAssign(Long id, OrderUpdateAssignDTO orderUpdateAssignDTO);
 }

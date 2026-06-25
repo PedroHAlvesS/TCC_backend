@@ -2,6 +2,7 @@ package br.com.rapidoja.tcc.controller;
 
 import br.com.rapidoja.tcc.dto.order.OrderRequestDTO;
 import br.com.rapidoja.tcc.dto.order.OrderResponseDTO;
+import br.com.rapidoja.tcc.dto.order.OrderUpdateAssignDTO;
 import br.com.rapidoja.tcc.dto.order.OrderUpdateDTO;
 import br.com.rapidoja.tcc.service.OrderService;
 import jakarta.validation.Valid;
@@ -64,6 +65,16 @@ public class OrderController {
     public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id, @RequestBody OrderUpdateDTO orderUpdateDTO) {
         try {
             OrderResponseDTO updatedOrder = orderService.update(id, orderUpdateDTO);
+            return ResponseEntity.ok(updatedOrder);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{id}/assign")
+    public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id, @RequestBody OrderUpdateAssignDTO orderUpdateAssignDTO) {
+        try {
+            OrderResponseDTO updatedOrder = orderService.updateAssign(id, orderUpdateAssignDTO);
             return ResponseEntity.ok(updatedOrder);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();

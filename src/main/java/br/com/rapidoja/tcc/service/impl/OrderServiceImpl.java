@@ -2,6 +2,7 @@ package br.com.rapidoja.tcc.service.impl;
 
 import br.com.rapidoja.tcc.dto.order.OrderRequestDTO;
 import br.com.rapidoja.tcc.dto.order.OrderResponseDTO;
+import br.com.rapidoja.tcc.dto.order.OrderUpdateAssignDTO;
 import br.com.rapidoja.tcc.dto.order.OrderUpdateDTO;
 import br.com.rapidoja.tcc.mapper.OrderMapper;
 import br.com.rapidoja.tcc.model.Address;
@@ -109,6 +110,21 @@ public class OrderServiceImpl implements OrderService {
                     .orElseThrow(() -> new IllegalArgumentException("Delivery man not found"));
             order.setDeliveryMan(deliveryMan);
         }
+
+        Order updatedOrder = orderRepository.save(order);
+        return orderMapper.toResponseDTO(updatedOrder);
+    }
+
+    @Override
+    public OrderResponseDTO updateAssign(Long id, OrderUpdateAssignDTO orderUpdateAssignDTO) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+
+        User deliveryMan = deliveryManRepository.findEnabledById(orderUpdateAssignDTO.getDeliveryManId())
+                .orElseThrow(() -> new IllegalArgumentException("Delivery man not found"));
+
+        order.setDeliveryMan(deliveryMan);
+        order.setStatus(OrderStatus.ASSIGNED);
 
         Order updatedOrder = orderRepository.save(order);
         return orderMapper.toResponseDTO(updatedOrder);
