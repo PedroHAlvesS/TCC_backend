@@ -44,6 +44,7 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/customers").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(new SecurityFilter(tokenService), UsernamePasswordAuthenticationFilter.class);

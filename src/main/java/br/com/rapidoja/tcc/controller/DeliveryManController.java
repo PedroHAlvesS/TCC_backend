@@ -30,7 +30,7 @@ public class DeliveryManController {
 
     // nao usado por admin
     @GetMapping("/{id}")
-    @AdminOrDeliveryMan(deliveryManIdParam = "id")
+    @AdminOrDeliveryMan
     public ResponseEntity<DeliveryManResponseDTO> getDeliveryManById(@PathVariable Long id) {
         return deliveryManService.findById(id)
                 .map(ResponseEntity::ok)

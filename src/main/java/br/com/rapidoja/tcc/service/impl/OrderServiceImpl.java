@@ -1,9 +1,6 @@
 package br.com.rapidoja.tcc.service.impl;
 
-import br.com.rapidoja.tcc.dto.order.OrderRequestDTO;
-import br.com.rapidoja.tcc.dto.order.OrderResponseDTO;
-import br.com.rapidoja.tcc.dto.order.OrderUpdateAssignDTO;
-import br.com.rapidoja.tcc.dto.order.OrderUpdateDTO;
+import br.com.rapidoja.tcc.dto.order.*;
 import br.com.rapidoja.tcc.mapper.OrderMapper;
 import br.com.rapidoja.tcc.model.Address;
 import br.com.rapidoja.tcc.model.Order;
@@ -126,6 +123,41 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryMan(deliveryMan);
         order.setStatus(OrderStatus.ASSIGNED);
 
+        Order updatedOrder = orderRepository.save(order);
+        return orderMapper.toResponseDTO(updatedOrder);
+    }
+
+    @Override
+    public List<OrderResponseDTO> findByCustomerEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+
+        List<Order> orders = orderRepository.findByCustomerId(user.getId());
+        return orders.stream()
+                .map(orderMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderResponseDTO> findByDeliveryManEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+
+        List<Order> orders = orderRepository.findByDeliveryManId(user.getId());
+        return orders.stream()
+                .map(orderMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderResponseDTO updateStatus(Long id, OrderUpdateStatusDTO orderUpdateStatusDTO) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+
+        User deliveryMan = deliveryManRepository.findByEmail(orderUpdateStatusDTO.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("Delivery man not found"));
+
+        order.setStatus(OrderStatus.valueOf(orderUpdateStatusDTO.getStatus()));
         Order updatedOrder = orderRepository.save(order);
         return orderMapper.toResponseDTO(updatedOrder);
     }

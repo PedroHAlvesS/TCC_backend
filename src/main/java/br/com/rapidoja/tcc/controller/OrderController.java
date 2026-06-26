@@ -1,9 +1,6 @@
 package br.com.rapidoja.tcc.controller;
 
-import br.com.rapidoja.tcc.dto.order.OrderRequestDTO;
-import br.com.rapidoja.tcc.dto.order.OrderResponseDTO;
-import br.com.rapidoja.tcc.dto.order.OrderUpdateAssignDTO;
-import br.com.rapidoja.tcc.dto.order.OrderUpdateDTO;
+import br.com.rapidoja.tcc.dto.order.*;
 import br.com.rapidoja.tcc.security.annotation.AdminOnly;
 import br.com.rapidoja.tcc.security.annotation.AdminOrCustomer;
 import br.com.rapidoja.tcc.security.annotation.AdminOrDeliveryMan;
@@ -37,9 +34,9 @@ public class OrderController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // admin and customer
+    // admin
     @GetMapping("/customer/{customerId}")
-    @AdminOrCustomer
+    @AdminOnly
     public ResponseEntity<List<OrderResponseDTO>> getOrdersByCustomerId(@PathVariable Long customerId) {
         List<OrderResponseDTO> orders = orderService.findByCustomerId(customerId);
         return ResponseEntity.ok(orders);
@@ -85,6 +82,31 @@ public class OrderController {
     public ResponseEntity<OrderResponseDTO> assignOrder(@PathVariable Long id, @RequestBody OrderUpdateAssignDTO orderUpdateAssignDTO) {
         try {
             OrderResponseDTO updatedOrder = orderService.updateAssign(id, orderUpdateAssignDTO);
+            return ResponseEntity.ok(updatedOrder);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/customer/email/{email}")
+    @AdminOrCustomer
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersByCustomerEmail(@PathVariable String email) {
+        List<OrderResponseDTO> orders = orderService.findByCustomerEmail(email);
+        return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/delivery-man/email/{email}")
+    @AdminOrDeliveryMan
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersByDeliveryManEmail(@PathVariable String email) {
+        List<OrderResponseDTO> orders = orderService.findByDeliveryManEmail(email);
+        return ResponseEntity.ok(orders);
+    }
+
+    @PutMapping("/{id}/status/{email}")
+    @AdminOrDeliveryMan
+    public ResponseEntity<OrderResponseDTO> updateOrderStatus(@PathVariable Long id, @RequestBody OrderUpdateStatusDTO orderUpdateStatusDTO, @PathVariable String email) {
+        try {
+            OrderResponseDTO updatedOrder = orderService.updateStatus(id, orderUpdateStatusDTO);
             return ResponseEntity.ok(updatedOrder);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();

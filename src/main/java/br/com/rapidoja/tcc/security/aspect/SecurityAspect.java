@@ -52,15 +52,15 @@ public class SecurityAspect {
             throw new SecurityException("Access denied: Customer or Admin role required");
         }
 
-        Long tokenUserId = (Long) authentication.getCredentials();
-        String customerIdParam = adminOrCustomer.customerIdParam();
-        Long customerId = getPathVariableValue(joinPoint, customerIdParam);
+        String tokenEmail = (String) authentication.getPrincipal();
+        String customerEmailParam = adminOrCustomer.customerEmailParam();
+        String customerEmail = getPathVariableStringValue(joinPoint, customerEmailParam);
 
-        if (customerId == null) {
-            throw new SecurityException("Access denied: Customer ID parameter not found");
+        if (customerEmail == null) {
+            throw new SecurityException("Access denied: Customer email parameter not found");
         }
 
-        if (!tokenUserId.equals(customerId)) {
+        if (!tokenEmail.equals(customerEmail)) {
             throw new SecurityException("Access denied: Token does not belong to the specified customer");
         }
 
@@ -89,22 +89,22 @@ public class SecurityAspect {
             throw new SecurityException("Access denied: Delivery Man or Admin role required");
         }
 
-        Long tokenUserId = (Long) authentication.getCredentials();
-        String deliveryManIdParam = adminOrDeliveryMan.deliveryManIdParam();
-        Long deliveryManId = getPathVariableValue(joinPoint, deliveryManIdParam);
+        String tokenEmail = (String) authentication.getPrincipal();
+        String deliveryManEmailParam = adminOrDeliveryMan.deliveryManEmailParam();
+        String deliveryManEmail = getPathVariableStringValue(joinPoint, deliveryManEmailParam);
 
-        if (deliveryManId == null) {
-            throw new SecurityException("Access denied: Delivery Man ID parameter not found");
+        if (deliveryManEmail == null) {
+            throw new SecurityException("Access denied: Delivery Man email parameter not found");
         }
 
-        if (!tokenUserId.equals(deliveryManId)) {
+        if (!tokenEmail.equals(deliveryManEmail)) {
             throw new SecurityException("Access denied: Token does not belong to the specified delivery man");
         }
 
         return joinPoint.proceed();
     }
 
-    private Long getPathVariableValue(ProceedingJoinPoint joinPoint, String paramName) {
+    private String getPathVariableStringValue(ProceedingJoinPoint joinPoint, String paramName) {
         Object[] args = joinPoint.getArgs();
         java.lang.reflect.Method method = ((org.aspectj.lang.reflect.MethodSignature) joinPoint.getSignature()).getMethod();
         java.lang.reflect.Parameter[] parameters = method.getParameters();
@@ -112,8 +112,8 @@ public class SecurityAspect {
         for (int i = 0; i < parameters.length; i++) {
             PathVariable pathVariable = parameters[i].getAnnotation(PathVariable.class);
             if (pathVariable != null && (pathVariable.value().equals(paramName) || parameters[i].getName().equals(paramName))) {
-                if (args[i] instanceof Long) {
-                    return (Long) args[i];
+                if (args[i] instanceof String) {
+                    return (String) args[i];
                 }
             }
         }

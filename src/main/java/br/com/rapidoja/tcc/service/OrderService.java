@@ -1,9 +1,6 @@
 package br.com.rapidoja.tcc.service;
 
-import br.com.rapidoja.tcc.dto.order.OrderRequestDTO;
-import br.com.rapidoja.tcc.dto.order.OrderResponseDTO;
-import br.com.rapidoja.tcc.dto.order.OrderUpdateAssignDTO;
-import br.com.rapidoja.tcc.dto.order.OrderUpdateDTO;
+import br.com.rapidoja.tcc.dto.order.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,4 +22,10 @@ public interface OrderService {
     OrderResponseDTO update(Long id, OrderUpdateDTO orderUpdateDTO);
 
     OrderResponseDTO updateAssign(Long id, OrderUpdateAssignDTO orderUpdateAssignDTO);
+
+    List<OrderResponseDTO> findByCustomerEmail(String email);
+
+    List<OrderResponseDTO> findByDeliveryManEmail(String email);
+
+    OrderResponseDTO updateStatus(Long id, OrderUpdateStatusDTO orderUpdateStatusDTO);
 }
