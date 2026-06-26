@@ -27,10 +27,11 @@ public class TokenService {
         this.expiration = expiration;
     }
 
-    public String generateToken(String email, String profile) {
+    public String generateToken(String email, String profile, Long userId) {
         return Jwts.builder()
                 .subject(email)
                 .claim("profile", profile)
+                .claim("userId", userId)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey())
@@ -58,6 +59,19 @@ public class TokenService {
                     .parseSignedClaims(token)
                     .getPayload();
             return claims.get("profile", String.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Long getUserIdFromToken(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+            return claims.get("userId", Long.class);
         } catch (Exception e) {
             return null;
         }

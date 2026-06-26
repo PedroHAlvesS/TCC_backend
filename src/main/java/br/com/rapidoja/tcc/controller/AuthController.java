@@ -39,7 +39,7 @@ public class AuthController {
             User user = userRepository.findByEmail(authRequestDTO.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
             
-            String token = tokenService.generateToken(user.getEmail(), user.getProfile().name());
+            String token = tokenService.generateToken(user.getEmail(), user.getProfile().name(), user.getId());
             
             AuthResponseDTO authResponseDTO = new AuthResponseDTO(
                 token,

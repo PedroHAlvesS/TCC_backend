@@ -4,6 +4,9 @@ import br.com.rapidoja.tcc.dto.order.OrderRequestDTO;
 import br.com.rapidoja.tcc.dto.order.OrderResponseDTO;
 import br.com.rapidoja.tcc.dto.order.OrderUpdateAssignDTO;
 import br.com.rapidoja.tcc.dto.order.OrderUpdateDTO;
+import br.com.rapidoja.tcc.security.annotation.AdminOnly;
+import br.com.rapidoja.tcc.security.annotation.AdminOrCustomer;
+import br.com.rapidoja.tcc.security.annotation.AdminOrDeliveryMan;
 import br.com.rapidoja.tcc.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +22,9 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-
+    // admin (exclusivo)
     @GetMapping
+    @AdminOnly
     public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
         List<OrderResponseDTO> orders = orderService.findAll();
         return ResponseEntity.ok(orders);
@@ -33,13 +37,17 @@ public class OrderController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // admin and customer
     @GetMapping("/customer/{customerId}")
+    @AdminOrCustomer
     public ResponseEntity<List<OrderResponseDTO>> getOrdersByCustomerId(@PathVariable Long customerId) {
         List<OrderResponseDTO> orders = orderService.findByCustomerId(customerId);
         return ResponseEntity.ok(orders);
     }
 
+    // admin and delivery man
     @GetMapping("/delivery-man/{deliveryManId}")
+    @AdminOrDeliveryMan
     public ResponseEntity<List<OrderResponseDTO>> getOrdersByDeliveryManId(@PathVariable Long deliveryManId) {
         List<OrderResponseDTO> orders = orderService.findByDeliveryManId(deliveryManId);
         return ResponseEntity.ok(orders);
@@ -71,8 +79,10 @@ public class OrderController {
         }
     }
 
+    // admin (exclusivo)
     @PutMapping("/{id}/assign")
-    public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id, @RequestBody OrderUpdateAssignDTO orderUpdateAssignDTO) {
+    @AdminOnly
+    public ResponseEntity<OrderResponseDTO> assignOrder(@PathVariable Long id, @RequestBody OrderUpdateAssignDTO orderUpdateAssignDTO) {
         try {
             OrderResponseDTO updatedOrder = orderService.updateAssign(id, orderUpdateAssignDTO);
             return ResponseEntity.ok(updatedOrder);

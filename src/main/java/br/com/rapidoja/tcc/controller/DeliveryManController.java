@@ -3,6 +3,8 @@ package br.com.rapidoja.tcc.controller;
 import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManRequestDTO;
 import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManResponseDTO;
 import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManUpdateDTO;
+import br.com.rapidoja.tcc.security.annotation.AdminOnly;
+import br.com.rapidoja.tcc.security.annotation.AdminOrDeliveryMan;
 import br.com.rapidoja.tcc.service.DeliveryManService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +22,15 @@ public class DeliveryManController {
     private final DeliveryManService deliveryManService;
 
     @GetMapping
+    @AdminOnly
     public ResponseEntity<List<DeliveryManResponseDTO>> getAllDeliveryMen() {
         List<DeliveryManResponseDTO> deliveryMen = deliveryManService.findAll();
         return ResponseEntity.ok(deliveryMen);
     }
 
+    // nao usado por admin
     @GetMapping("/{id}")
+    @AdminOrDeliveryMan(deliveryManIdParam = "id")
     public ResponseEntity<DeliveryManResponseDTO> getDeliveryManById(@PathVariable Long id) {
         return deliveryManService.findById(id)
                 .map(ResponseEntity::ok)
@@ -40,6 +45,7 @@ public class DeliveryManController {
     }
 
     @PostMapping
+    @AdminOnly
     public ResponseEntity<DeliveryManResponseDTO> createDeliveryMan(@Valid @RequestBody DeliveryManRequestDTO deliveryManRequestDTO) {
         try {
             DeliveryManResponseDTO createdDeliveryMan = deliveryManService.create(deliveryManRequestDTO);
@@ -50,6 +56,7 @@ public class DeliveryManController {
     }
 
     @PutMapping("/{id}")
+    @AdminOnly
     public ResponseEntity<DeliveryManResponseDTO> updateDeliveryMan(@PathVariable Long id, @RequestBody DeliveryManUpdateDTO deliveryManUpdateDTO) {
         try {
             DeliveryManResponseDTO updatedDeliveryMan = deliveryManService.update(id, deliveryManUpdateDTO);
@@ -60,6 +67,7 @@ public class DeliveryManController {
     }
 
     @DeleteMapping("/{id}")
+    @AdminOnly
     public ResponseEntity<Void> deleteDeliveryMan(@PathVariable Long id) {
         try {
             deliveryManService.delete(id);

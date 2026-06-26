@@ -23,18 +23,19 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        
+
         String token = recoverToken(request);
         
         if (token != null) {
             String email = tokenService.validateToken(token);
             String profile = tokenService.getProfileFromToken(token);
+            Long userId = tokenService.getUserIdFromToken(token);
             
             if (email != null) {
                 UsernamePasswordAuthenticationToken authentication = 
                     new UsernamePasswordAuthenticationToken(
                         email, 
-                        null, 
+                        userId, 
                         Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + profile))
                     );
                 SecurityContextHolder.getContext().setAuthentication(authentication);
