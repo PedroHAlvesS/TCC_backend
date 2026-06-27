@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +17,9 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    // admin (exclusivo)
+
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
         List<OrderResponseDTO> orders = orderService.findAll();
         return ResponseEntity.ok(orders);
@@ -70,8 +72,8 @@ public class OrderController {
         }
     }
 
-    // admin (exclusivo)
     @PutMapping("/{id}/assign")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<OrderResponseDTO> assignOrder(@PathVariable Long id, @RequestBody OrderUpdateAssignDTO orderUpdateAssignDTO) {
         try {
             OrderResponseDTO updatedOrder = orderService.updateAssign(id, orderUpdateAssignDTO);

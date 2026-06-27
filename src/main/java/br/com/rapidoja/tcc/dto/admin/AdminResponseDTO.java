@@ -1,6 +1,5 @@
 package br.com.rapidoja.tcc.dto.admin;
 
-import br.com.rapidoja.tcc.model.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +15,6 @@ public class AdminResponseDTO {
     private String name;
     private String email;
     private String phoneNumber;
-    private Profile profile;
+    private String profile;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Boolean enabled;
 }
