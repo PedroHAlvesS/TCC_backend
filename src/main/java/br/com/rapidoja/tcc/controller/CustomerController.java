@@ -3,8 +3,6 @@ package br.com.rapidoja.tcc.controller;
 import br.com.rapidoja.tcc.dto.customer.CustomerRequestDTO;
 import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
 import br.com.rapidoja.tcc.dto.customer.CustomerUpdateDTO;
-import br.com.rapidoja.tcc.security.annotation.AdminOnly;
-import br.com.rapidoja.tcc.security.annotation.AdminOrCustomer;
 import br.com.rapidoja.tcc.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +21,6 @@ public class CustomerController {
 
     // admin (exclusivo)
     @GetMapping
-    @AdminOnly
     public ResponseEntity<List<CustomerResponseDTO>> getAllCustomers() {
         List<CustomerResponseDTO> customers = customerService.findAll();
         return ResponseEntity.ok(customers);

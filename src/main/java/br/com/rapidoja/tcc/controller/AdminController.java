@@ -3,12 +3,13 @@ package br.com.rapidoja.tcc.controller;
 import br.com.rapidoja.tcc.dto.admin.AdminRequestDTO;
 import br.com.rapidoja.tcc.dto.admin.AdminResponseDTO;
 import br.com.rapidoja.tcc.dto.admin.AdminUpdateDTO;
-import br.com.rapidoja.tcc.security.annotation.AdminOnly;
 import br.com.rapidoja.tcc.service.AdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,15 +19,15 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @AdminOnly
     @GetMapping("/email/{email}")
-    public ResponseEntity<AdminResponseDTO> getAdminByEmail(@PathVariable String email) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<AdminResponseDTO> getAdminByEmail(Authentication authentication, @PathVariable String email) {
+
         return adminService.findByEmail(email)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @AdminOnly
     @PostMapping
     public ResponseEntity<AdminResponseDTO> createAdmin(@Valid @RequestBody AdminRequestDTO adminRequestDTO) {
         try {
@@ -37,7 +38,6 @@ public class AdminController {
         }
     }
 
-    @AdminOnly
     @PutMapping("/{id}")
     public ResponseEntity<AdminResponseDTO> updateAdmin(@PathVariable Long id, @RequestBody AdminUpdateDTO adminUpdateDTO) {
         try {
@@ -48,7 +48,6 @@ public class AdminController {
         }
     }
 
-    @AdminOnly
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
         try {

@@ -1,9 +1,6 @@
 package br.com.rapidoja.tcc.controller;
 
 import br.com.rapidoja.tcc.dto.order.*;
-import br.com.rapidoja.tcc.security.annotation.AdminOnly;
-import br.com.rapidoja.tcc.security.annotation.AdminOrCustomer;
-import br.com.rapidoja.tcc.security.annotation.AdminOrDeliveryMan;
 import br.com.rapidoja.tcc.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +18,6 @@ public class OrderController {
     private final OrderService orderService;
     // admin (exclusivo)
     @GetMapping
-    @AdminOnly
     public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
         List<OrderResponseDTO> orders = orderService.findAll();
         return ResponseEntity.ok(orders);
@@ -36,7 +32,6 @@ public class OrderController {
 
     // admin
     @GetMapping("/customer/{customerId}")
-    @AdminOnly
     public ResponseEntity<List<OrderResponseDTO>> getOrdersByCustomerId(@PathVariable Long customerId) {
         List<OrderResponseDTO> orders = orderService.findByCustomerId(customerId);
         return ResponseEntity.ok(orders);
@@ -44,7 +39,6 @@ public class OrderController {
 
     // admin and delivery man
     @GetMapping("/delivery-man/{deliveryManId}")
-    @AdminOrDeliveryMan
     public ResponseEntity<List<OrderResponseDTO>> getOrdersByDeliveryManId(@PathVariable Long deliveryManId) {
         List<OrderResponseDTO> orders = orderService.findByDeliveryManId(deliveryManId);
         return ResponseEntity.ok(orders);
@@ -78,7 +72,6 @@ public class OrderController {
 
     // admin (exclusivo)
     @PutMapping("/{id}/assign")
-    @AdminOnly
     public ResponseEntity<OrderResponseDTO> assignOrder(@PathVariable Long id, @RequestBody OrderUpdateAssignDTO orderUpdateAssignDTO) {
         try {
             OrderResponseDTO updatedOrder = orderService.updateAssign(id, orderUpdateAssignDTO);
@@ -89,21 +82,18 @@ public class OrderController {
     }
 
     @GetMapping("/customer/email/{email}")
-    @AdminOrCustomer
     public ResponseEntity<List<OrderResponseDTO>> getOrdersByCustomerEmail(@PathVariable String email) {
         List<OrderResponseDTO> orders = orderService.findByCustomerEmail(email);
         return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/delivery-man/email/{email}")
-    @AdminOrDeliveryMan
     public ResponseEntity<List<OrderResponseDTO>> getOrdersByDeliveryManEmail(@PathVariable String email) {
         List<OrderResponseDTO> orders = orderService.findByDeliveryManEmail(email);
         return ResponseEntity.ok(orders);
     }
 
     @PutMapping("/{id}/status/{email}")
-    @AdminOrDeliveryMan
     public ResponseEntity<OrderResponseDTO> updateOrderStatus(@PathVariable Long id, @RequestBody OrderUpdateStatusDTO orderUpdateStatusDTO, @PathVariable String email) {
         try {
             OrderResponseDTO updatedOrder = orderService.updateStatus(id, orderUpdateStatusDTO);
