@@ -11,10 +11,6 @@ public interface DeliveryManService {
 
     List<DeliveryManResponseDTO> findAll();
 
-    Optional<DeliveryManResponseDTO> findById(Long id);
-
-    Optional<DeliveryManResponseDTO> findByEmail(String email);
-
     DeliveryManResponseDTO create(DeliveryManRequestDTO deliveryManRequestDTO);
 
     DeliveryManResponseDTO update(Long id, DeliveryManUpdateDTO deliveryManUpdateDTO);

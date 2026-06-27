@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,27 +21,14 @@ public class DeliveryManController {
     private final DeliveryManService deliveryManService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<DeliveryManResponseDTO>> getAllDeliveryMen() {
         List<DeliveryManResponseDTO> deliveryMen = deliveryManService.findAll();
         return ResponseEntity.ok(deliveryMen);
     }
 
-    // nao usado por admin
-    @GetMapping("/{id}")
-    public ResponseEntity<DeliveryManResponseDTO> getDeliveryManById(@PathVariable Long id) {
-        return deliveryManService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/email/{email}")
-    public ResponseEntity<DeliveryManResponseDTO> getDeliveryManByEmail(@PathVariable String email) {
-        return deliveryManService.findByEmail(email)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DeliveryManResponseDTO> createDeliveryMan(@Valid @RequestBody DeliveryManRequestDTO deliveryManRequestDTO) {
         try {
             DeliveryManResponseDTO createdDeliveryMan = deliveryManService.create(deliveryManRequestDTO);
@@ -51,6 +39,7 @@ public class DeliveryManController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DeliveryManResponseDTO> updateDeliveryMan(@PathVariable Long id, @RequestBody DeliveryManUpdateDTO deliveryManUpdateDTO) {
         try {
             DeliveryManResponseDTO updatedDeliveryMan = deliveryManService.update(id, deliveryManUpdateDTO);
@@ -61,6 +50,7 @@ public class DeliveryManController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteDeliveryMan(@PathVariable Long id) {
         try {
             deliveryManService.delete(id);

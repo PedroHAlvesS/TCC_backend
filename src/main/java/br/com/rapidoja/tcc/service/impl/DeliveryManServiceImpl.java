@@ -34,18 +34,6 @@ public class DeliveryManServiceImpl implements DeliveryManService {
     }
 
     @Override
-    public Optional<DeliveryManResponseDTO> findById(Long id) {
-        return deliveryManRepository.findEnabledById(id)
-                .map(deliveryManMapper::toResponseDTO);
-    }
-
-    @Override
-    public Optional<DeliveryManResponseDTO> findByEmail(String email) {
-        return deliveryManRepository.findEnabledByEmail(email)
-                .map(deliveryManMapper::toResponseDTO);
-    }
-
-    @Override
     public DeliveryManResponseDTO create(DeliveryManRequestDTO deliveryManRequestDTO) {
         if (deliveryManRepository.existsByEmail(deliveryManRequestDTO.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
