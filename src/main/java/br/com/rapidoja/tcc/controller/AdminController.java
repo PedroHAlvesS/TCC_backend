@@ -19,16 +19,17 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @GetMapping("/email/{email}")
+    @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<AdminResponseDTO> getAdminByEmail(Authentication authentication, @PathVariable String email) {
-
+    public ResponseEntity<AdminResponseDTO> getAdminByEmail(Authentication authentication) {
+        String email = authentication.getName();
         return adminService.findByEmail(email)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<AdminResponseDTO> createAdmin(@Valid @RequestBody AdminRequestDTO adminRequestDTO) {
         try {
             AdminResponseDTO createdAdmin = adminService.create(adminRequestDTO);
@@ -38,23 +39,15 @@ public class AdminController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AdminResponseDTO> updateAdmin(@PathVariable Long id, @RequestBody AdminUpdateDTO adminUpdateDTO) {
+    @PutMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<AdminResponseDTO> updateAdmin(Authentication authentication, @RequestBody AdminUpdateDTO adminUpdateDTO) {
+        String email = authentication.getName();
         try {
-            AdminResponseDTO updatedAdmin = adminService.update(id, adminUpdateDTO);
+            AdminResponseDTO updatedAdmin = adminService.update(email, adminUpdateDTO);
             return ResponseEntity.ok(updatedAdmin);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
-        try {
-            adminService.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
         }
     }
 }

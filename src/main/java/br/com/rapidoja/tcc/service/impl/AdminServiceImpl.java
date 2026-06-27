@@ -12,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static br.com.rapidoja.tcc.util.Validate.*;
 
@@ -47,12 +45,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminResponseDTO update(Long id, AdminUpdateDTO adminUpdateDTO) {
-        User user = adminRepository.findEnabledById(id)
+    public AdminResponseDTO update(String email, AdminUpdateDTO adminUpdateDTO) {
+        User user = adminRepository.findEnabledByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Admin not found"));
 
         if (adminUpdateDTO.getEmail() != null && isValidEmail(adminUpdateDTO.getEmail())) {
-            if (adminRepository.existsByEmailAndNotId(adminUpdateDTO.getEmail(), id)) {
+            if (adminRepository.existsByEmail(adminUpdateDTO.getEmail())) {
                 throw new IllegalArgumentException("Email already in use by another admin");
             }
             user.setEmail(adminUpdateDTO.getEmail());
@@ -68,14 +66,5 @@ public class AdminServiceImpl implements AdminService {
 
         User updatedUser = adminRepository.save(user);
         return adminMapper.toResponseDTO(updatedUser);
-    }
-
-    @Override
-    public void delete(Long id) {
-        User user = adminRepository.findEnabledById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Admin not found"));
-
-        user.setEnabled(false);
-        adminRepository.save(user);
     }
 }
