@@ -34,12 +34,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerResponseDTO> findById(Long id) {
-        return customerRepository.findEnabledById(id)
-                .map(customerMapper::toResponseDTO);
-    }
-
-    @Override
     public Optional<CustomerResponseDTO> findByEmail(String email) {
         return customerRepository.findEnabledByEmail(email)
                 .map(customerMapper::toResponseDTO);
@@ -60,12 +54,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerResponseDTO update(Long id, CustomerUpdateDTO customerUpdateDTO) {
-        User user = customerRepository.findEnabledById(id)
+    public CustomerResponseDTO update(String email, CustomerUpdateDTO customerUpdateDTO) {
+        User user = customerRepository.findEnabledByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
 
         if (customerUpdateDTO.getEmail() != null && isValidEmail(customerUpdateDTO.getEmail())) {
-            if (customerRepository.existsByEmailAndNotId(customerUpdateDTO.getEmail(), id)) {
+            if (customerRepository.existsByEmail(customerUpdateDTO.getEmail())) {
                 throw new IllegalArgumentException("Email already in use by another customer");
             }
             user.setEmail(customerUpdateDTO.getEmail());
@@ -84,8 +78,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void delete(Long id) {
-        User user = customerRepository.findEnabledById(id)
+    public void delete(String email) {
+        User user = customerRepository.findEnabledByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
 
         user.setEnabled(false);

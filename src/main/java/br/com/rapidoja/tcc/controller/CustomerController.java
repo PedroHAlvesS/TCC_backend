@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,22 +21,17 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    // admin (exclusivo)
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<CustomerResponseDTO>> getAllCustomers() {
         List<CustomerResponseDTO> customers = customerService.findAll();
         return ResponseEntity.ok(customers);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CustomerResponseDTO> getCustomerById(@PathVariable Long id) {
-        return customerService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/email/{email}")
-    public ResponseEntity<CustomerResponseDTO> getCustomerByEmail(@PathVariable String email) {
+    @GetMapping("/email")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    public ResponseEntity<CustomerResponseDTO> getCustomerByEmail(Authentication authentication) {
+        String email = authentication.getName();
         return customerService.findByEmail(email)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -50,20 +47,24 @@ public class CustomerController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CustomerResponseDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerUpdateDTO customerUpdateDTO) {
+    @PutMapping
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    public ResponseEntity<CustomerResponseDTO> updateCustomer(Authentication authentication, @RequestBody CustomerUpdateDTO customerUpdateDTO) {
+        String email = authentication.getName();
         try {
-            CustomerResponseDTO updatedCustomer = customerService.update(id, customerUpdateDTO);
+            CustomerResponseDTO updatedCustomer = customerService.update(email, customerUpdateDTO);
             return ResponseEntity.ok(updatedCustomer);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
+    @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    public ResponseEntity<Void> deleteCustomer(Authentication authentication) {
+        String email = authentication.getName();
         try {
-            customerService.delete(id);
+            customerService.delete(email);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

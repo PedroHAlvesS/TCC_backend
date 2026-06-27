@@ -11,13 +11,11 @@ public interface CustomerService {
 
     List<CustomerResponseDTO> findAll();
 
-    Optional<CustomerResponseDTO> findById(Long id);
-
     Optional<CustomerResponseDTO> findByEmail(String email);
 
     CustomerResponseDTO create(CustomerRequestDTO customerRequestDTO);
 
-    CustomerResponseDTO update(Long id, CustomerUpdateDTO customerUpdateDTO);
+    CustomerResponseDTO update(String email, CustomerUpdateDTO customerUpdateDTO);
 
-    void delete(Long id);
+    void delete(String email);
 }
