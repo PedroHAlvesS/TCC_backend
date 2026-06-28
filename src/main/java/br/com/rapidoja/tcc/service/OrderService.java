@@ -1,9 +1,11 @@
 package br.com.rapidoja.tcc.service;
 
-import br.com.rapidoja.tcc.dto.order.*;
+import br.com.rapidoja.tcc.dto.order.OrderRequestDTO;
+import br.com.rapidoja.tcc.dto.order.OrderResponseDTO;
+import br.com.rapidoja.tcc.dto.order.OrderUpdateAssignDTO;
+import br.com.rapidoja.tcc.dto.order.OrderUpdateStatusDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface OrderService {
 

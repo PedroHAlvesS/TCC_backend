@@ -1,6 +1,5 @@
 package br.com.rapidoja.tcc.controller;
 
-import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
 import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManRequestDTO;
 import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManResponseDTO;
 import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManUpdateDTO;

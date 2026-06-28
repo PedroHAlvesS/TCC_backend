@@ -1,6 +1,9 @@
 package br.com.rapidoja.tcc.service.impl;
 
-import br.com.rapidoja.tcc.dto.order.*;
+import br.com.rapidoja.tcc.dto.order.OrderRequestDTO;
+import br.com.rapidoja.tcc.dto.order.OrderResponseDTO;
+import br.com.rapidoja.tcc.dto.order.OrderUpdateAssignDTO;
+import br.com.rapidoja.tcc.dto.order.OrderUpdateStatusDTO;
 import br.com.rapidoja.tcc.mapper.OrderMapper;
 import br.com.rapidoja.tcc.model.Address;
 import br.com.rapidoja.tcc.model.Order;
@@ -15,9 +18,7 @@ import br.com.rapidoja.tcc.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

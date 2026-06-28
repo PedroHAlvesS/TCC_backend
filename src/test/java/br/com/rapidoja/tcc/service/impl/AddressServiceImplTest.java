@@ -1,8 +1,8 @@
 package br.com.rapidoja.tcc.service.impl;
 
 import br.com.rapidoja.tcc.dto.order.OrderAddressDTO;
-import br.com.rapidoja.tcc.model.Address;
 import br.com.rapidoja.tcc.mocks.order.OrderAddressMock;
+import br.com.rapidoja.tcc.model.Address;
 import br.com.rapidoja.tcc.repository.AddressRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
