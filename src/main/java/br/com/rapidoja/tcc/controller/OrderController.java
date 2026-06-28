@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -83,14 +84,18 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/customer/email/{email}")
-    public ResponseEntity<List<OrderResponseDTO>> getOrdersByCustomerEmail(@PathVariable String email) {
+    @GetMapping("/customer")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersByCustomerEmail(Authentication authentication) {
+        String email = authentication.getName();
         List<OrderResponseDTO> orders = orderService.findByCustomerEmail(email);
         return ResponseEntity.ok(orders);
     }
 
-    @GetMapping("/delivery-man/email/{email}")
-    public ResponseEntity<List<OrderResponseDTO>> getOrdersByDeliveryManEmail(@PathVariable String email) {
+    @GetMapping("/delivery-man")
+    @PreAuthorize("hasRole('ROLE_DELIVERY_MAN')")
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersByDeliveryManEmail(Authentication authentication) {
+        String email = authentication.getName();
         List<OrderResponseDTO> orders = orderService.findByDeliveryManEmail(email);
         return ResponseEntity.ok(orders);
     }
