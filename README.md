@@ -14,7 +14,7 @@ Projeto backend da aplicação Rapidoja, desenvolvido com Spring Boot.
 
 #### MySQL + Aplicação (Padrão)
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 #### Apenas MySQL

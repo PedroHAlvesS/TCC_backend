@@ -10,12 +10,12 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data_only:/var/lib/mysql
     networks:
       - rapidoja_network
 
 volumes:
-  mysql_data:
+  mysql_data_only:
 
 networks:
   rapidoja_network:

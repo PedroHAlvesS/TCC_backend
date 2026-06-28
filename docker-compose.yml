@@ -10,7 +10,7 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data_full:/var/lib/mysql
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
@@ -41,7 +41,7 @@ services:
       - rapidoja_network
 
 volumes:
-  mysql_data:
+  mysql_data_full:
 
 networks:
   rapidoja_network:
