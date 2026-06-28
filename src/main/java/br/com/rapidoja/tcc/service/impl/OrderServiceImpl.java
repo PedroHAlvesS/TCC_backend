@@ -14,8 +14,10 @@ import br.com.rapidoja.tcc.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -150,14 +152,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDTO updateStatus(Long id, OrderUpdateStatusDTO orderUpdateStatusDTO) {
+    public OrderResponseDTO updateStatusByDeliveryMan(Long id, OrderUpdateStatusDTO orderUpdateStatusDTO, String email) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
 
-        User deliveryMan = deliveryManRepository.findByEmail(orderUpdateStatusDTO.getEmail())
+        User deliveryMan = deliveryManRepository.findEnabledByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Delivery man not found"));
 
-        order.setStatus(OrderStatus.valueOf(orderUpdateStatusDTO.getStatus()));
+        if (!deliveryMan.getId().equals(order.getDeliveryMan().getId())) {
+            throw new IllegalArgumentException("Delivery man not authorized");
+        }
+
+        OrderStatus orderStatus = OrderStatus.valueOf(orderUpdateStatusDTO.getStatus());
+        Set<OrderStatus> validStatus = Set.of(OrderStatus.IN_TRANSIT, OrderStatus.DELIVERED, OrderStatus.CANCELED);
+        if (!validStatus.contains(orderStatus)) {
+            throw new IllegalArgumentException("Invalid status");
+        }
+
+        order.setStatus(orderStatus);
         Order updatedOrder = orderRepository.save(order);
         return orderMapper.toResponseDTO(updatedOrder);
     }

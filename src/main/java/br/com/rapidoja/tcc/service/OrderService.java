@@ -27,5 +27,5 @@ public interface OrderService {
 
     List<OrderResponseDTO> findByDeliveryManEmail(String email);
 
-    OrderResponseDTO updateStatus(Long id, OrderUpdateStatusDTO orderUpdateStatusDTO);
+    OrderResponseDTO updateStatusByDeliveryMan(Long id, OrderUpdateStatusDTO orderUpdateStatusDTO, String email);
 }

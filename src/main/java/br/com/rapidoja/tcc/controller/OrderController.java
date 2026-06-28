@@ -100,10 +100,12 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
-    @PutMapping("/{id}/status/{email}")
-    public ResponseEntity<OrderResponseDTO> updateOrderStatus(@PathVariable Long id, @RequestBody OrderUpdateStatusDTO orderUpdateStatusDTO, @PathVariable String email) {
+    @PutMapping("/delivery-man/{id}/status")
+    @PreAuthorize("hasRole('ROLE_DELIVERY_MAN')")
+    public ResponseEntity<OrderResponseDTO> updateOrderStatus(Authentication authentication, @PathVariable Long id, @RequestBody OrderUpdateStatusDTO orderUpdateStatusDTO) {
+        String email = authentication.getName();
         try {
-            OrderResponseDTO updatedOrder = orderService.updateStatus(id, orderUpdateStatusDTO);
+            OrderResponseDTO updatedOrder = orderService.updateStatusByDeliveryMan(id, orderUpdateStatusDTO, email);
             return ResponseEntity.ok(updatedOrder);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();

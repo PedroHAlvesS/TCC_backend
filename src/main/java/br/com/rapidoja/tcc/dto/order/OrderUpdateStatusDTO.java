@@ -11,6 +11,4 @@ import lombok.NoArgsConstructor;
 public class OrderUpdateStatusDTO {
     @NotBlank
     private String status;
-    @NotBlank
-    private String email;
 }
