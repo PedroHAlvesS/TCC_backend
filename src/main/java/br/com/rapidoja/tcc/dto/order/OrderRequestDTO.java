@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderRequestDTO {
 
-    @NotNull(message = "Customer ID is required")
-    private Long customerId;
-
     @NotNull(message = "Address is required")
     private OrderAddressDTO address;
 

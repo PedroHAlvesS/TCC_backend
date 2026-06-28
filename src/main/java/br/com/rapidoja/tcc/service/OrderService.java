@@ -17,7 +17,7 @@ public interface OrderService {
 
     List<OrderResponseDTO> findByStatus(String status);
 
-    OrderResponseDTO create(OrderRequestDTO orderRequestDTO);
+    OrderResponseDTO create(OrderRequestDTO orderRequestDTO, String email);
 
     OrderResponseDTO update(Long id, OrderUpdateDTO orderUpdateDTO);
 

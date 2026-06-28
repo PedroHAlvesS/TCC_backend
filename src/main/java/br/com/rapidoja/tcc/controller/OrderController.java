@@ -54,9 +54,11 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO orderRequestDTO) {
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    public ResponseEntity<OrderResponseDTO> createOrder(Authentication authentication, @Valid @RequestBody OrderRequestDTO orderRequestDTO) {
+        String email = authentication.getName();
         try {
-            OrderResponseDTO createdOrder = orderService.create(orderRequestDTO);
+            OrderResponseDTO createdOrder = orderService.create(orderRequestDTO, email);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();

@@ -6,6 +6,7 @@ import br.com.rapidoja.tcc.model.Address;
 import br.com.rapidoja.tcc.model.Order;
 import br.com.rapidoja.tcc.model.OrderStatus;
 import br.com.rapidoja.tcc.model.User;
+import br.com.rapidoja.tcc.repository.CustomerRepository;
 import br.com.rapidoja.tcc.repository.DeliveryManRepository;
 import br.com.rapidoja.tcc.repository.OrderRepository;
 import br.com.rapidoja.tcc.repository.UserRepository;
@@ -29,6 +30,8 @@ public class OrderServiceImpl implements OrderService {
     private final DeliveryManRepository deliveryManRepository;
     private final AddressService addressService;
     private final OrderMapper orderMapper;
+    private final CustomerRepository customerRepository;
+
     @Override
     public List<OrderResponseDTO> findAll() {
         return orderRepository.findAll().stream()
@@ -64,9 +67,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDTO create(OrderRequestDTO orderRequestDTO) {
-        User customer = userRepository.findById(orderRequestDTO.getCustomerId())
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+    public OrderResponseDTO create(OrderRequestDTO orderRequestDTO, String email) {
+        User customer = customerRepository.findEnabledByEmail(email).orElseThrow(
+                () -> new IllegalArgumentException("Customer not found")
+        );
 
         Address address = addressService.findOrCreate(
                 orderRequestDTO.getAddress()
