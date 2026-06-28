@@ -22,6 +22,20 @@ public class UserMock {
         return user;
     }
 
+    public static User getUserWithId(Long id) {
+        User user = new User();
+        user.setEmail("email");
+        user.setPhoneNumber("31987654321");
+        user.setProfile(Profile.CUSTOMER);
+        user.setEnabled(true);
+        user.setPassword("password");
+        user.setId(id);
+        user.setName("name");
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        return user;
+    }
+
     public static List<User> getUsers() {
         return List.of(getUser());
     }

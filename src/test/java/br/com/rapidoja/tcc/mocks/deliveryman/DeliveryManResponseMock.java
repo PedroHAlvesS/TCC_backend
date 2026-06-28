@@ -9,10 +9,8 @@ import java.util.List;
 public class DeliveryManResponseMock {
     public static DeliveryManResponseDTO getDeliveryManResponseDTO() {
         DeliveryManResponseDTO deliveryManResponseDTO = new DeliveryManResponseDTO();
-        deliveryManResponseDTO.setProfile(Profile.DELIVERY_MAN);
+        deliveryManResponseDTO.setProfile(Profile.DELIVERY_MAN.getProfileName());
         deliveryManResponseDTO.setCreatedAt(LocalDateTime.now());
-        deliveryManResponseDTO.setUpdatedAt(LocalDateTime.now());
-        deliveryManResponseDTO.setEnabled(true);
         deliveryManResponseDTO.setId(1L);
         deliveryManResponseDTO.setName("name");
         deliveryManResponseDTO.setEmail("email");

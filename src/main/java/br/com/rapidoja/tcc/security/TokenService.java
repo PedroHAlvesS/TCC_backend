@@ -61,19 +61,6 @@ public class TokenService {
         }
     }
 
-    public String getProfileFromToken(String token) {
-        try {
-            Claims claims = Jwts.parser()
-                    .verifyWith(getSigningKey())
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-            return claims.get("profile", String.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));

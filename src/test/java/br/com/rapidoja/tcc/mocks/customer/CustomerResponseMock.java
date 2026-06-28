@@ -9,10 +9,8 @@ import java.util.List;
 public class CustomerResponseMock {
     public static CustomerResponseDTO getCustomerResponseDTO() {
         CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO();
-        customerResponseDTO.setProfile(Profile.CUSTOMER);
+        customerResponseDTO.setProfile(Profile.CUSTOMER.getProfileName());
         customerResponseDTO.setCreatedAt(LocalDateTime.now());
-        customerResponseDTO.setUpdatedAt(LocalDateTime.now());
-        customerResponseDTO.setEnabled(true);
         customerResponseDTO.setId(1L);
         customerResponseDTO.setName("name");
         customerResponseDTO.setEmail("email");

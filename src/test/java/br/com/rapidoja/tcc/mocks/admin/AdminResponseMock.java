@@ -9,10 +9,8 @@ import java.util.List;
 public class AdminResponseMock {
     public static AdminResponseDTO getAdminResponseDTO() {
         AdminResponseDTO adminResponseDTO = new AdminResponseDTO();
-        adminResponseDTO.setProfile(Profile.ADMIN);
+        adminResponseDTO.setProfile(Profile.ADMIN.getProfileName());
         adminResponseDTO.setCreatedAt(LocalDateTime.now());
-        adminResponseDTO.setUpdatedAt(LocalDateTime.now());
-        adminResponseDTO.setEnabled(true);
         adminResponseDTO.setId(1L);
         adminResponseDTO.setName("name");
         adminResponseDTO.setEmail("email");

@@ -85,46 +85,6 @@ class CustomerServiceImplTest {
     }
 
     @Nested
-    @DisplayName("Given findById is called")
-    class GivenFindByIdIsCalled {
-        @Nested
-        @DisplayName("When findById is valid")
-        class WhenFindByIdIsValid {
-            final Long id = 1L;
-            final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
-            final User user = UserMock.getUser();
-            private Optional<CustomerResponseDTO> result;
-
-            @BeforeEach
-            void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
-                when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
-
-                result = customerService.findById(id);
-            }
-
-            @Test
-            @DisplayName("Then should return customer")
-            void thenShouldReturnCustomer() {
-                assertTrue(result.isPresent());
-                assertEquals(customerResponse, result.get());
-            }
-
-            @Test
-            @DisplayName("Then should call repository")
-            void thenShouldCallRepository() {
-                verify(customerRepository).findEnabledById(id);
-            }
-
-            @Test
-            @DisplayName("Then should call mapper")
-            void thenShouldCallMapper() {
-                verify(customerMapper).toResponseDTO(user);
-            }
-        }
-    }
-
-    @Nested
     @DisplayName("Given findByEmail is called")
     class GivenFindByEmailIsCalled {
         @Nested
@@ -233,10 +193,11 @@ class CustomerServiceImplTest {
     @Nested
     @DisplayName("Given update is called")
     class GivenUpdateIsCalled {
+        String email = "email@example.com";
+
         @Nested
         @DisplayName("When update is valid")
         class WhenUpdateIsValid {
-            final Long id = 1L;
             final CustomerUpdateDTO customerUpdateDTO = CustomerUpdateMock.getCustomerUpdateDTO();
             final CustomerResponseDTO customerResponse = CustomerResponseMock.getCustomerResponseDTO();
             final User user = UserMock.getUser();
@@ -244,13 +205,13 @@ class CustomerServiceImplTest {
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
-                when(customerRepository.existsByEmailAndNotId(customerUpdateDTO.getEmail(), id)).thenReturn(false);
+                when(customerRepository.findEnabledByEmail(email)).thenReturn(Optional.of(user));
+                when(customerRepository.existsByEmail(customerUpdateDTO.getEmail())).thenReturn(false);
                 when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
                 when(customerRepository.save(user)).thenReturn(user);
                 when(customerMapper.toResponseDTO(user)).thenReturn(customerResponse);
 
-                result = customerService.update(id, customerUpdateDTO);
+                result = customerService.update(email, customerUpdateDTO);
             }
 
             @Test
@@ -262,13 +223,13 @@ class CustomerServiceImplTest {
             @Test
             @DisplayName("Then should call repository to find user")
             void thenShouldCallRepositoryToFindUser() {
-                verify(customerRepository).findEnabledById(id);
+                verify(customerRepository).findEnabledByEmail(email);
             }
 
             @Test
             @DisplayName("Then should check if email exists for other user")
             void thenShouldCheckIfEmailExistsForOtherUser() {
-                verify(customerRepository).existsByEmailAndNotId(customerUpdateDTO.getEmail(), id);
+                verify(customerRepository).existsByEmail(customerUpdateDTO.getEmail());
             }
 
             @Test
@@ -287,38 +248,36 @@ class CustomerServiceImplTest {
         @Nested
         @DisplayName("When update is invalid - customer not found")
         class WhenUpdateIsInvalidCustomerNotFound {
-            final Long id = 999L;
             final CustomerUpdateDTO customerUpdateDTO = new CustomerUpdateDTO();
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.empty());
+                when(customerRepository.findEnabledByEmail(email)).thenReturn(Optional.empty());
             }
 
             @Test
             @DisplayName("Then should throw IllegalArgumentException")
             void thenShouldThrowIllegalArgumentException() {
-                assertThrows(IllegalArgumentException.class, () -> customerService.update(id, customerUpdateDTO));
+                assertThrows(IllegalArgumentException.class, () -> customerService.update(email, customerUpdateDTO));
             }
         }
 
         @Nested
         @DisplayName("When update is invalid - email already in use")
         class WhenUpdateIsInvalidEmailInUse {
-            final Long id = 1L;
             final CustomerUpdateDTO customerUpdateDTO = CustomerUpdateMock.getCustomerUpdateDTO();
             final User user = UserMock.getUser();
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
-                when(customerRepository.existsByEmailAndNotId(customerUpdateDTO.getEmail(), id)).thenReturn(true);
+                when(customerRepository.findEnabledByEmail(email)).thenReturn(Optional.of(user));
+                when(customerRepository.existsByEmail(customerUpdateDTO.getEmail())).thenReturn(true);
             }
 
             @Test
             @DisplayName("Then should throw IllegalArgumentException")
             void thenShouldThrowIllegalArgumentException() {
-                assertThrows(IllegalArgumentException.class, () -> customerService.update(id, customerUpdateDTO));
+                assertThrows(IllegalArgumentException.class, () -> customerService.update(email, customerUpdateDTO));
             }
         }
     }
@@ -326,23 +285,24 @@ class CustomerServiceImplTest {
     @Nested
     @DisplayName("Given delete is called")
     class GivenDeleteIsCalled {
+        String email = "email@example.com";
+
         @Nested
         @DisplayName("When delete is valid")
         class WhenDeleteIsValid {
-            final Long id = 1L;
             final User user = UserMock.getUser();
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.of(user));
+                when(customerRepository.findEnabledByEmail(email)).thenReturn(Optional.of(user));
 
-                customerService.delete(id);
+                customerService.delete(email);
             }
 
             @Test
             @DisplayName("Then should call repository to find user")
             void thenShouldCallRepositoryToFindUser() {
-                verify(customerRepository).findEnabledById(id);
+                verify(customerRepository).findEnabledByEmail(email);
             }
 
             @Test
@@ -361,17 +321,16 @@ class CustomerServiceImplTest {
         @Nested
         @DisplayName("When delete is invalid - customer not found")
         class WhenDeleteIsInvalidCustomerNotFound {
-            final Long id = 999L;
 
             @BeforeEach
             void setUp() {
-                when(customerRepository.findEnabledById(id)).thenReturn(Optional.empty());
+                when(customerRepository.findEnabledByEmail(email)).thenReturn(Optional.empty());
             }
 
             @Test
             @DisplayName("Then should throw IllegalArgumentException")
             void thenShouldThrowIllegalArgumentException() {
-                assertThrows(IllegalArgumentException.class, () -> customerService.delete(id));
+                assertThrows(IllegalArgumentException.class, () -> customerService.delete(email));
             }
         }
     }

@@ -26,30 +26,17 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Long id) {
-        return orderService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    // admin
     @GetMapping("/customer/{customerId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<OrderResponseDTO>> getOrdersByCustomerId(@PathVariable Long customerId) {
         List<OrderResponseDTO> orders = orderService.findByCustomerId(customerId);
         return ResponseEntity.ok(orders);
     }
 
-    // admin and delivery man
     @GetMapping("/delivery-man/{deliveryManId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<OrderResponseDTO>> getOrdersByDeliveryManId(@PathVariable Long deliveryManId) {
         List<OrderResponseDTO> orders = orderService.findByDeliveryManId(deliveryManId);
-        return ResponseEntity.ok(orders);
-    }
-
-    @GetMapping("/status/{status}")
-    public ResponseEntity<List<OrderResponseDTO>> getOrdersByStatus(@PathVariable String status) {
-        List<OrderResponseDTO> orders = orderService.findByStatus(status);
         return ResponseEntity.ok(orders);
     }
 
@@ -60,16 +47,6 @@ public class OrderController {
         try {
             OrderResponseDTO createdOrder = orderService.create(orderRequestDTO, email);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id, @RequestBody OrderUpdateDTO orderUpdateDTO) {
-        try {
-            OrderResponseDTO updatedOrder = orderService.update(id, orderUpdateDTO);
-            return ResponseEntity.ok(updatedOrder);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }

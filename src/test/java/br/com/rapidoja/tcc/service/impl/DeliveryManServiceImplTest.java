@@ -85,46 +85,6 @@ class DeliveryManServiceImplTest {
     }
 
     @Nested
-    @DisplayName("Given findById is called")
-    class GivenFindByIdIsCalled {
-        @Nested
-        @DisplayName("When findById is valid")
-        class WhenFindByIdIsValid {
-            final Long id = 1L;
-            final DeliveryManResponseDTO deliveryManResponse = DeliveryManResponseMock.getDeliveryManResponseDTO();
-            final User user = UserMock.getUser();
-            private Optional<DeliveryManResponseDTO> result;
-
-            @BeforeEach
-            void setUp() {
-                when(deliveryManRepository.findEnabledById(id)).thenReturn(Optional.of(user));
-                when(deliveryManMapper.toResponseDTO(user)).thenReturn(deliveryManResponse);
-
-                result = deliveryManService.findById(id);
-            }
-
-            @Test
-            @DisplayName("Then should return delivery man")
-            void thenShouldReturnDeliveryMan() {
-                assertTrue(result.isPresent());
-                assertEquals(deliveryManResponse, result.get());
-            }
-
-            @Test
-            @DisplayName("Then should call repository")
-            void thenShouldCallRepository() {
-                verify(deliveryManRepository).findEnabledById(id);
-            }
-
-            @Test
-            @DisplayName("Then should call mapper")
-            void thenShouldCallMapper() {
-                verify(deliveryManMapper).toResponseDTO(user);
-            }
-        }
-    }
-
-    @Nested
     @DisplayName("Given findByEmail is called")
     class GivenFindByEmailIsCalled {
         @Nested
@@ -133,7 +93,7 @@ class DeliveryManServiceImplTest {
             final String email = "test@email.com";
             final DeliveryManResponseDTO deliveryManResponse = DeliveryManResponseMock.getDeliveryManResponseDTO();
             final User user = UserMock.getUser();
-            private Optional<DeliveryManResponseDTO> result;
+            private DeliveryManResponseDTO result;
 
             @BeforeEach
             void setUp() {
@@ -146,8 +106,7 @@ class DeliveryManServiceImplTest {
             @Test
             @DisplayName("Then should return delivery man")
             void thenShouldReturnDeliveryMan() {
-                assertTrue(result.isPresent());
-                assertEquals(deliveryManResponse, result.get());
+                assertEquals(deliveryManResponse, result);
             }
 
             @Test
@@ -177,7 +136,6 @@ class DeliveryManServiceImplTest {
 
             @BeforeEach
             void setUp() {
-
                 when(deliveryManRepository.existsByEmail(deliveryManRequestDTO.getEmail())).thenReturn(false);
                 when(deliveryManMapper.toEntity(deliveryManRequestDTO)).thenReturn(user);
                 when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
