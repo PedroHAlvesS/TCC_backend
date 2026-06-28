@@ -3,11 +3,11 @@ spring:
     name: tcc
   datasource:
     url: jdbc:mysql://localhost:3307/rapidoja_db?useTimezone=true&serverTimezone=America/Sao_Paulo&allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: root123
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root123}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    show-sql: true
+    show-sql: ${JPA_SHOW_SQL:true}
     hibernate:
       ddl-auto: none
     properties:
@@ -29,8 +29,8 @@ spring:
       allowed-headers: "*"
       allow-credentials: true
 jwt:
-  secret: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
-  expiration: 86400000
+  secret: ${JWT_SECRET:5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437}
+  expiration: ${JWT_EXPIRATION:86400000}
 
 logging:
   level:

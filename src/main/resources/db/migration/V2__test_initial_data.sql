@@ -6,9 +6,9 @@
 -- 1. Inserir usuários (cliente, entregador e administrador)
 -- A senha é "admin123" codificada com BCrypt (hash gerado)
 INSERT INTO user (name, email, password, phone_number, profile, is_enabled) VALUES
-                                                                                ('João Silva', 'joao@email.com', '$2a$10$03ZszFTZ735igzxWrnChMe5inUb0YxnjfhPfkuWSK.dShXASHByQ2', '11999999999', 'CUSTOMER', TRUE),
-                                                                                ('Maria Oliveira', 'maria@email.com', '$2a$10$03ZszFTZ735igzxWrnChMe5inUb0YxnjfhPfkuWSK.dShXASHByQ2', '11988888888', 'DELIVERY_MAN', TRUE),
-                                                                                ('Admin', 'admin@rapidoja.com', '$2a$10$03ZszFTZ735igzxWrnChMe5inUb0YxnjfhPfkuWSK.dShXASHByQ2', '31999999999', 'ADMIN', TRUE);
+                                                                                ('João Silva Cliente', 'joao_cliente@email.com', '$2a$10$03ZszFTZ735igzxWrnChMe5inUb0YxnjfhPfkuWSK.dShXASHByQ2', '11999999999', 'CUSTOMER', TRUE),
+                                                                                ('Maria Oliveira Entregadora', 'maria_entregadora@email.com', '$2a$10$03ZszFTZ735igzxWrnChMe5inUb0YxnjfhPfkuWSK.dShXASHByQ2', '11988888888', 'DELIVERY_MAN', TRUE),
+                                                                                ('Admin', 'teste_admin@rapidoja.com', '$2a$10$03ZszFTZ735igzxWrnChMe5inUb0YxnjfhPfkuWSK.dShXASHByQ2', '31999999999', 'ADMIN', TRUE);
 
 -- 2. Inserir endereços
 INSERT INTO address (street, number, neighborhood, zip_code, complement) VALUES
