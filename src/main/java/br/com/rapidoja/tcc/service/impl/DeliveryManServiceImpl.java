@@ -78,4 +78,11 @@ public class DeliveryManServiceImpl implements DeliveryManService {
         user.setEnabled(false);
         deliveryManRepository.save(user);
     }
+
+    @Override
+    public DeliveryManResponseDTO findByEmail(String email) {
+        User user = deliveryManRepository.findEnabledByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("DeliveryMan not found"));
+        return deliveryManMapper.toResponseDTO(user);
+    }
 }

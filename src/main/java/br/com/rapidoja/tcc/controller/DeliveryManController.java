@@ -1,5 +1,6 @@
 package br.com.rapidoja.tcc.controller;
 
+import br.com.rapidoja.tcc.dto.customer.CustomerResponseDTO;
 import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManRequestDTO;
 import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManResponseDTO;
 import br.com.rapidoja.tcc.dto.deliveryman.DeliveryManUpdateDTO;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,5 +60,13 @@ public class DeliveryManController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/email")
+    @PreAuthorize("hasRole('ROLE_DELIVERY_MAN')")
+    public ResponseEntity<DeliveryManResponseDTO> getDeliveryManByEmail(Authentication authentication) {
+        String email = authentication.getName();
+        DeliveryManResponseDTO responseDTO = deliveryManService.findByEmail(email);
+        return ResponseEntity.ok(responseDTO);
     }
 }

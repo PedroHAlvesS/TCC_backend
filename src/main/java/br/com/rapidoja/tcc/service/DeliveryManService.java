@@ -15,4 +15,6 @@ public interface DeliveryManService {
     DeliveryManResponseDTO update(Long id, DeliveryManUpdateDTO deliveryManUpdateDTO);
 
     void delete(Long id);
+
+    DeliveryManResponseDTO findByEmail(String email);
 }
